@@ -1,0 +1,60 @@
+<?php
+$this->headTitle('About');
+$this->mainMenu()->setActiveItemId('about');
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'About' => $this->url('about'),
+]);
+?>
+
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('img/bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="site-heading">
+                    <h1 class="index-title">About</h1>
+                    <span class="subheading">You really really wanne know more...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Breadcrumbs -->
+<?= $this->pageBreadcrumbs()->render(); ?>
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            <div class="post-preview">
+                <h4>Verzeilberg.nl</h4>
+                <p>
+                    Verzeilberg is mijn achternaam. Dat verklaart de url. Dit is mijn speeltuin. Ik ben software developer. Ik ontwikkel web apps.<br/>
+                    Ik doe dit met behulp van onderstaande programmeertalen en frameworks:
+                </p>
+                <ul>
+                    <li>php</li>
+                    <li>html(5)</li>
+                    <li>css(3)</li>
+                    <li>bootstrap 4 </li>
+                    <li>JavaScript</li>
+                    <li>jQuery</li>
+                    <li>vues.js</li>
+                    <li>Zend 2 and up</li>
+                    <li>Zend expressive</li>
+                    <li>Laravel</li>
+                    <li>Etc.</li>
+                </ul>
+                <h4>Design</h4>
+                <p>
+                    Ik ben van nature geen designer. Dus wellicht dat je wat flaws ziet in het desing. Sorry daarvoor ;). Tips zijn natuurlijk altijd welkom. 
+                </p>
+                <h4>Hardlopen</h4>
+                <p>
+                    Ik loop graag hard. Op moment ben ik aan het oefenen voor een halve marathon. De eerste halve marathon die ik ga lopen is in Utrecht. Mijn vorderingen zijn te volgen op mijn 
+                    <a href="https://runkeeper.com/user/tessannl/profile" title="Runkeeper pagina" target="new">Runkeeper pagina</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

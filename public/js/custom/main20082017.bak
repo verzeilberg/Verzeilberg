@@ -1,0 +1,32 @@
+$(document).ready(function () {
+
+    //Click functions for menu
+    //Open menu
+    $("#menuButton").on("click", function () {
+        $("nav").animate({right: 0}, 200);
+    });
+    //Close menu
+    $("#menuCloseButton").on("click", function () {
+        $("nav").animate({right: -210}, 200);
+    });
+    //Init simpleWeather app
+    $.simpleWeather({
+        location: 'Almere, Flevoland',
+        woeid: '',
+        unit: 'c',
+        success: function (weather) {
+            html = '<span id="weatherText"><i class="icon-' + weather.code + '"></i> ' + weather.temp + '&deg;' + weather.units.temp + ' ';
+            html += weather.city + ', ' + weather.region + '</span>';
+            //html += '<li class="currently">' + weather.currently + '</li>';
+            //html += '<li>' + weather.wind.direction + ' ' + weather.wind.speed + ' ' + weather.units.speed + '</li></ul>';
+
+            $("#weather").html(html);
+        },
+        error: function (error) {
+            $("#weather").html('<p>' + error + '</p>');
+        }
+    });
+
+
+
+});

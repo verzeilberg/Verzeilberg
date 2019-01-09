@@ -1,0 +1,80 @@
+<?php
+$this->headTitle('Profiel pagina');
+$this->mainMenu()->setActiveItemId('settings');
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'User' => $this->url('application', ['action' => 'edit']),
+]);
+
+$form->setAttributes(array(
+    'class' => 'form-horizontal',
+    'enctype' => 'multipart/form-data'
+));
+
+$form->prepare();
+?>
+<!-- Page Header -->
+<?php echo $this->form()->openTag($form); ?>
+<header class="masthead" style="background-image: url('/img/bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="site-heading">
+                    <h1><?= $this->escapeHtml($user->getFullName()) ?></h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Breadcrumbs -->
+<?= $this->pageBreadcrumbs()->render(); ?>
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-block text-center p-4">
+                    <img src="/img/profiel-picture.jpg" class="rounded-circle" width="200" height="200" alt="<?= $this->escapeHtml($user->getFullName()) ?>">
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-3">
+                    <div class="has-feedback">
+                        <div class="input-group">
+                            <label class="input-group-addon btn btn-file">
+                                Browse&hellip; <input type="file" name="image" style="display: none;" multiple>
+                            </label>
+                            <input type="text" class="form-control" name="userImageFileName" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="card">
+                <div class="card-header text-muted">
+                    <h3 class="card-title text-center">Profiel</h3>
+                </div>
+                <div class="card-block">
+                    <div class="form-group">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <textarea name="bio" class="form-control" id="editor">
+                                <?php echo $user->getBio(); ?>
+                            </textarea>
+                            <?= $this->formElement($form->get('bio')); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-muted">
+                    <a href="mailto: <?php echo $user->getEmail(); ?>" title="Mail naar <?php echo $this->escapeHtml($user->getFullName()); ?>">
+                        <i class="fas fa-envelope fa-2x"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <button type="submit" id="submit" class="btn btn-primary mt-3">Profiel opslaan</button>
+        </div>
+    </div>
+</div>
+<?php echo $this->form()->closeTag($form); ?>

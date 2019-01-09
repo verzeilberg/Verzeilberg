@@ -1,0 +1,142 @@
+<?php
+$this->headTitle('Evenementen');
+$this->mainMenu()->setActiveItemId('events');
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Events' => $this->url('events'),
+]);
+?>
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('img/bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="site-heading">
+                    <h1 class="index-title">Events</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Breadcrumbs -->
+<?= $this->pageBreadcrumbs()->render(); ?>
+<!-- Main Content -->
+<div class="container" id="events">
+    <div id="map"></div>
+    <script>
+
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: new google.maps.LatLng(52.1979222, 5.0211668),
+                zoom: 7.76
+            });
+
+            //declare marker call it 'i'
+            var marker, i;
+
+            //declare infowindow
+            var infowindow = new google.maps.InfoWindow();
+            //Set locations in array
+            var locations = <?php echo $locations; ?>;
+            //add marker to each locations
+            for (i = 0; i < locations.length; i++) {
+                marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+                    map: map,
+                    icon: new google.maps.MarkerImage(
+                            locations[i][3],
+                            null,
+                            null,
+                            null,
+                            new google.maps.Size(40, 55)
+                            )
+                });
+                //click function to marker, pops up infowindow
+                google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                    return function () {
+                        infowindow.setContent(locations[i][0]);
+                        infowindow.open(map, marker);
+                    }
+                })(marker, i));
+            }
+        }
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB1n_2dwkLKZ8lMls39ZGeLuxQ08oyniIs&callback=initMap">
+    </script>
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12" >
+            <div class="card btn-dark">
+                <form id="selectYear" method="post">
+                    <div class="row mt-2 mb-2">
+                        <div class="col text-right">
+                            <label class="col-form-label sr-only" for="year">Jaar</label>
+                        </div>
+                        <div class="col-4">
+                            <select name="year" id="year" onchange="this.form.submit()" class="form-control form-control-sm">
+                                <option <?php echo ($year == 'all' ? selected : ''); ?> value="all">Alle jaren</option>
+                                <?php foreach ($years AS $eYear) { ?>
+                                    <option <?php echo ($year == $eYear['eYear']? selected : ''); ?> value="<?php echo $eYear['eYear']; ?>"><?php echo $eYear['eYear']; ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <select name="category" id="category" onchange="this.form.submit()" class="form-control form-control-sm">
+                                <option <?php echo ($categoryId == 'all' ? selected : ''); ?> value="all">Alle categorie&euml;n</option>
+                                <?php foreach ($categories AS $category) { ?>
+                                    <option <?php echo ($categoryId == $category->getId() ? selected : ''); ?> value="<?php echo $category->getId(); ?>"><?php echo $category->getName(); ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="col text-left">
+                            <label class="col-form-label sr-only" for="category">Categorie</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <?php
+    $totalEvents = count($events) - 1;
+    ?>
+    <div class="row">
+        <?php foreach ($events AS $index => $event) { ?>
+            <?php $image = $event->getEventImage(); ?>
+            <div class="col-sm-12 col-md-6 mb-4">
+                <div class="card">
+                    <?php
+                    if (!empty($image)) {
+                        if (is_object($event->getEventEndDate()) && $event->getEventEndDate() < new DateTime()) {
+                            echo '<img class="finishedStamp img-responsive" src="/img/finished.png" alt="finished" />';
+                        }
+                        echo '<img class="img-responsive eventDetails" data-eventid="'.$event->getId().'" style="width:100%;" src="/' . $image->getImageTypes('400x200')[0]->getFolder() . $image->getImageTypes('400x200')[0]->getFileName() . '" alt="' . $image->getAlt() . '"/>';
+                    }
+                    ?>
+                    <div class="card-body">
+                        <h5 class="card-title event-title"><?php echo $event->getTitle(); ?></h5>
+
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6">
+                                <p class="card-text">
+                                    <i class="fas fa-calendar-alt"></i>&nbsp;<?php echo ((is_object($event->getEventStartDate()) ? $event->getEventStartDate()->format('d-m-Y') : '')); ?>
+                                </p>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <p class="card-text text-right">
+                                    <i class="far fa-calendar-alt"></i>&nbsp;<?php echo ((is_object($event->getEventEndDate()) ? $event->getEventEndDate()->format('d-m-Y') : '')); ?>
+                                </p>
+                            </div>
+                        </div>
+                        <button class="btn btn-dark col text-right eventDetails" data-eventid="<?php echo $event->getId() ?>"><i class="fas fa-angle-double-right"></i><i class="fas fa-angle-double-right"></i><i class="fas fa-angle-double-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        <?php } ?>
+    </div>
+</div>
+
+<!-- Event detail  -->
+<?php
+echo $this->partial('event/partial/event_detail.phtml');
+?>

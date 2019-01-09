@@ -1,0 +1,38 @@
+<section id="portfolio" class="portfolio">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 mx-auto text-center">
+                <h2>Blogs</h2>
+                <hr class="small">
+                <div class="row">
+<?php foreach ($blogs AS $blog) { ?>
+                        <div class="col-md-6">
+                            <div class="portfolio-item">
+                                <a href="<?php echo $this->url('blog', ['action' => 'detail', 'id' => $blog->getId()]); ?>">
+                                    <?php
+                                    $images = $blog->getBlogImages();
+                                    foreach ($images AS $image) {
+                                        foreach ($image->getImageTypes('800x600') AS $imageType) {
+                                            echo '<div class="card-img">';
+                                            echo '<span class="blogTitle">' . $blog->getTitle() . '</span>';
+                                            echo '<img class="img-portfolio img-fluid" src="/' . $imageType->getFolder() . $imageType->getFileName() . '" alt="' . $image->getAlt() . '"/>';
+                                            echo '</div>';
+                                            break;
+                                        }
+                                        break;
+                                    }
+                                    ?>
+                                </a>
+                            </div>
+                        </div>
+<?php } ?>
+                </div>
+                <!-- /.row (nested) -->
+                <a href="<?php echo $this->url('blog', ['action' => 'index']); ?>" class="btn btn-dark"><?php echo $this->translate('View more blogs'); ?></a>
+            </div>
+            <!-- /.col-lg-10 -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container -->
+</section>

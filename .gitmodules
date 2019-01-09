@@ -1,0 +1,39 @@
+[submodule "UploadFiles"]
+    path = module/UploadFiles
+    url = https://github.com/verzeilberg/UploadFiles.git
+[submodule "UploadImages"]
+    path = module/UploadImages
+    url = https://github.com/verzeilberg/UploadImages.git
+[submodule "User"]
+    path = module/User
+    url = https://github.com/verzeilberg/Login.git
+[submodule "Event"]
+    path = module/Event
+    url = https://github.com/verzeilberg/Event.git
+[submodule "Contact"]
+    path = module/Contact
+    url = https://github.com/verzeilberg/Contact.git
+[submodule "CheckList"]
+    path = module/CheckList
+    url = https://github.com/verzeilberg/Checklist.git
+[submodule "Email"]
+    path = module/Email
+    url = https://github.com/verzeilberg/Email.git
+[submodule "Agenda"]
+    path = module/Agenda
+    url = https://github.com/verzeilberg/Agenda.git
+[submodule "Blog"]
+    path = module/Blog
+    url = https://github.com/verzeilberg/Blog.git
+[submodule "GoogleAgendaApi"]
+    path = module/GoogleAgendaApi
+    url = https://github.com/verzeilberg/GoogleAgendaApi.git
+[submodule "Search"]
+    path = module/Search
+    url = https://github.com/verzeilberg/Search.git
+[submodule "Twitter"]
+    path = module/Twitter
+    url = https://github.com/verzeilberg/Twitter.git
+[submodule "YouTube"]
+    path = module/YouTube
+    url = https://github.com/verzeilberg/YouTube.git

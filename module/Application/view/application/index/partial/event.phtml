@@ -1,0 +1,21 @@
+<?php
+$imageURL = '';
+$image = $upcommingEvent->getEventImage();
+if (is_object($image)) {
+    foreach ($image->getImageTypes('original') AS $imageType) {
+        $imageURL = $imageType->getFolder() . $imageType->getFileName();
+        break;
+    }
+}
+?>
+<!-- Callout -->
+<aside id="event" class="callout" style="background: url(<?php echo $imageURL; ?>) no-repeat center center scroll;-webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;">
+    <div class="text-vertical-center">
+        <h3 class="eventTitle"><?php echo $upcommingEvent->getTitle(); ?></h3>
+        <div class="clock"></div>
+        <input type="hidden" name="eventDate" value="<?php echo (is_object($upcommingEvent->getEventStartDate()) ? $upcommingEvent->getEventStartDate()->format('j M Y G:i:s') : ''); ?>" />
+        <p>
+            <a href="<?php echo $this->url('events'); ?>" class="btn btn-dark btn-lg js-scroll-trigger"><i class="fas fa-angle-double-down fa-3x"></i></a>
+        </p>
+    </div>
+</aside>

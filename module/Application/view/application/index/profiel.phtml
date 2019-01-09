@@ -1,0 +1,55 @@
+<?php
+$this->headTitle('Profiel pagina');
+$this->mainMenu()->setActiveItemId('settings');
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'User' => $this->url('application', ['action' => 'settings']),
+]);
+?>
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('/img/bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="site-heading">
+                    <h1><?= $this->escapeHtml($user->getFullName()) ?></h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Breadcrumbs -->
+<?= $this->pageBreadcrumbs()->render(); ?>
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-block text-center p-4">
+                    <img src="/img/profiel-picture.jpg" class="rounded-circle" width="200" height="200" alt="<?= $this->escapeHtml($user->getFullName()) ?>">
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="card">
+                <div class="card-header text-muted">
+                    <h3 class="card-title text-center">Profiel</h3>
+                </div>
+                <div class="card-block">
+                    <?php echo $user->getBio(); ?>
+                    
+                </div>
+                <div class="card-footer text-muted">
+                    <a href="mailto: <?php echo $user->getEmail(); ?>" title="Mail naar <?php echo $this->escapeHtml($user->getFullName()); ?>">
+                        <i class="fas fa-envelope fa-2x"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="<?php echo $this->url('profiel', array('action' => 'edit')); ?>" title="Edit profiel" class="btn btn-primary mt-2">Edit profiel</a>
+        </div>
+    </div>
+</div>

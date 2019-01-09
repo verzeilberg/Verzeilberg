@@ -1,0 +1,57 @@
+<?php
+$this->layout('layout/beheer');
+$this->headTitle('Users');
+
+$this->mainMenu()->setActiveItemId('overviewusers');
+
+$this->pageBreadcrumbs()->setItems([
+    'Beheer' => $this->url('beheer'),
+    'Users' => $this->url('beheer/users'),
+]);
+?>
+
+<hgroup class="col-sm-12 col-md-12 col-lg-12">
+    <h1 id="index">MANAGE USERS</h1>
+</hgroup>
+<div class="col-sm-12 col-md-12 col-lg-12">
+    <p>
+        <a class="btn btn-default" href="
+           <?= $this->url('beheer/users', ['action' => 'add']); ?>">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New User
+        </a>
+    </p>
+    <table class="table table-striped table table-bordered">
+        <tr>
+            <th>ID</th>
+            <th>E-mail</th>
+            <th>Full Name</th>
+            <th>Date Created</th>
+            <th>Status</th>        
+            <th style="text-align:center">Actions</th>        
+        </tr>
+        <?php foreach ($users as $user): ?>
+            <tr>
+                <td><?= $this->escapeHtml($user->getId()); ?></td>
+                <td>
+                    <a href="<?= $this->url('beheer/users', ['action' => 'view', 'id' => $user->getId()]); ?>">
+                        <?= $this->escapeHtml($user->getEmail()); ?>
+                    </a> 
+                </td>
+                <td><?= $this->escapeHtml($user->getFullName()); ?></a> 
+                </td>
+                <td><?= (is_object($user->getDateCreated()) ? $user->getDateCreated()->format('d-m-Y') : ''); ?></td>        
+                <td><?= $user->getStatusAsString(); ?></td>
+                <td align="center">
+                    <a class="btn btn-info" href="<?= $this->url('beheer/users', ['action' => 'edit', 'id' => $user->getId()]);
+                        ?>">
+                        <span class="glyphicon glyphicon-pencil" ></span> Edit
+                    </a>
+                    <a class="btn btn-default" href="<?= $this->url('beheer/users', ['action' => 'change-password', 'id' => $user->getId()]);
+                        ?>">
+                        <span class="glyphicon glyphicon-asterisk"></span> Change Password
+                    </a>
+                </td>    
+            </tr>
+        <?php endforeach; ?>   
+    </table>
+</div>

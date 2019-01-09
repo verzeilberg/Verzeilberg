@@ -1,0 +1,85 @@
+<section id="contact" class="section contact">
+    <div class="container">
+        <div class="row row justify-content-md-center">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="block">
+                    <div class="heading">
+                        <h2>Contact</h2>
+                        <hr class="small">
+                        <p>Please leave a message after the tone.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row row justify-content-md-center">
+            <div class="col-xs-12 col-sm-12 col-md-6">
+                <div class="form-group">
+                    <?php if ($post == false) { ?>
+                        <?php echo $this->form()->openTag($form); ?>
+                        <label class="custom-control custom-radio">
+                            <input id="radio2" name="salutation" type="radio" value="1" class="custom-control-input">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">De heer</span>
+                        </label>
+                        <label class="custom-control custom-radio">
+                            <input id="radio2" name="salutation" type="radio" value="2" class="custom-control-input">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">Mevrouw</span>
+                        </label>
+                        <?php if (!empty($this->formElementErrors($form->get('salutation')))) { ?>
+                            <div class="mt-2 mb-2">
+                                <?php echo $this->formElementErrors($form->get('salutation')); ?>
+                            </div>
+                        <?php } ?>
+                        <div class="input-field">
+                            <?php echo $this->formText($form->get('name')); ?>
+                        </div>
+                        <?php if (!empty($this->formElementErrors($form->get('name')))) { ?>
+                            <div>
+                                <?php echo $this->formElementErrors($form->get('name')); ?>
+                            </div>
+                        <?php } ?>
+                        <div class="input-field">
+                            <?php echo $this->formEmail($form->get('email')); ?>
+                        </div>
+                    <?php if (!empty($this->formElementErrors($form->get('email')))) { ?>
+                        <div>
+                            <?php echo $this->formElementErrors($form->get('email')); ?>
+                        </div>
+                        <?php } ?>
+                        <div class="input-field">
+                            <?php echo $this->formText($form->get('subject')); ?>
+                        </div>
+                        <?php if (!empty($this->formElementErrors($form->get('subject')))) { ?>
+                            <div>
+                                <?php echo $this->formElementErrors($form->get('subject')); ?>
+                            </div>
+                        <?php } ?>
+                        <div class="input-field">
+                            <?php echo $this->formTextarea($form->get('message')); ?>
+                        </div>
+                        <?php if (!empty($this->formElementErrors($form->get('message')))) { ?>
+                            <div>
+                                <?php echo $this->formElementErrors($form->get('message')); ?>
+                            </div>
+                        <?php } ?>
+                        <div class="input-field">
+                            <?php echo $this->formCaptcha($form->get('captcha')); ?>
+                        </div>
+                        <?php if (!empty($this->formElementErrors($form->get('captcha')))) { ?>
+                            <div>
+                                <?php echo $this->formElementErrors($form->get('captcha')); ?>
+                            </div>
+                        <?php } ?>
+                        <button class="btn btn-send" type="submit">Send me</button>
+                        <?php echo $this->form()->closeTag($form); ?>
+                    <?php } else { ?>
+                        <div id="success">
+                            <p>Your Message was sent successfully</p>
+                        </div>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

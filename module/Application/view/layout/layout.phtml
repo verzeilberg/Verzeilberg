@@ -1,0 +1,87 @@
+ <?= $this->doctype() ?>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <?= $this->headTitle('Verzeilberg')->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?=
+                $this->headMeta()
+                ->appendName('viewport', 'width=device-width, initial-scale=1, shrink-to-fit=no')
+                ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+        ?>
+
+        <!-- Le styles -->
+        <?=
+                $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
+                ->prependStylesheet($this->basePath('css/style.css'))
+                ->prependStylesheet($this->basePath('css/bootstrap4/bootstrap.min.css'))
+                ->prependStylesheet('https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.css')
+                ->prependStylesheet('https://fonts.googleapis.com/css?family=Bangers')
+        ?>
+
+        <!-- Scripts -->
+        <?=
+        $this->headScript()
+        ?>
+    </head>
+    <body>
+        <!-- Navigation -->
+        <?php
+            echo $this->mainMenu()->render();
+        ?>
+        <!-- Content of the page -->
+        <?= $this->content ?>
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-10 mx-auto text-center">
+                        <ul class="social-icons">
+                            <li>
+                                <a href="mailto:info@verzeilberg.nl">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.twitter.com/verzeilberg" target="new">
+                                    <i class="fab fa-twitter fa-fw"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://nl.pinterest.com/sannder4893/" target="new">
+                                    <i class="fab fa-pinterest fa-fw"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://plus.google.com/116796544448659373858" target="new">
+                                    <i class="fab fa-google-plus fa-fw"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.youtube.com/channel/UC86Xp0QHgiBSZRJedRlxCtQ" target="new">
+                                    <i class="fab fa-youtube fa-fw"></i>
+                                </a>
+                            </li>
+                        </ul>
+                        <hr class="small">
+                        <p>&copy; 2016 - <?php echo date('Y') ?></p>
+                    </div>
+                </div>
+            </div>
+            <a id="to-top" href="#top" class="btn btn-dark btn-lg js-scroll-trigger">
+                <i class="fas fa-angle-double-up"></i>
+            </a>
+        </footer>
+        <?=
+                $this->inlineScript()
+                ->prependFile('https://use.fontawesome.com/releases/v5.0.4/js/all.js')
+                ->prependFile('https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.js')
+                ->prependFile($this->basePath('js/ckEditor/ckeditor.js'))
+                ->prependFile($this->basePath('js/bootstrap4/bootstrap.min.js'))
+                ->prependFile($this->basePath('js/bootstrap4/popper/popper.min.js'))
+                ->prependFile($this->basePath('js/bootstrap4/jquery-easing/jquery.easing.min.js'))
+                ->prependFile($this->basePath('js/custom/main.js'))
+                ->prependFile($this->basePath('js/jquery-3.1.0.min.js'))
+        ?>
+    </body>
+</html>
