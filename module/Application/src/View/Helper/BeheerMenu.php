@@ -56,7 +56,7 @@ class BeheerMenu extends AbstractHelper {
         $result = '<div class="col-md-auto">';
         $result .= '<h1>MENU</h1>';
         $result .=  '<nav class="navbar navbar-dark bg-dark">';
-        $result .=      '<ul class="nav flex-column flex-nowrap w-100">';
+        $result .=      '<ul class="nav flex-column flex-nowrap w-100" id="beheerMenu">';
         // Render items
         foreach ($this->items as $item) {
             if (!isset($item['float']))

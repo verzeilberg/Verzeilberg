@@ -40,12 +40,12 @@ span.beheerMenuTitle span.glyphicon-menu-hamburger {
     margin-right:5px;
 }
 
-.nav-link[data-toggle].collapsed:after {
+ul#beheerMenu li a.nav-link[data-toggle].collapsed:after {
     float:right;
     margin-left:15px;
     content: "▾";
 }
-.nav-link[data-toggle]:not(.collapsed):after {
+ul#beheerMenu li a .nav-link[data-toggle]:not(.collapsed):after {
     float:right;
     margin-left:15px;
     content: "▴";
