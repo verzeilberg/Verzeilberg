@@ -1,18 +1,24 @@
 <?php
 $this->layout('layout/beheer');
 $this->headTitle('Users');
-
 $this->mainMenu()->setActiveItemId('overviewusers');
-
+$this->pageBreadcrumbs()->setLayout('beheer');
 $this->pageBreadcrumbs()->setItems([
     'Beheer' => $this->url('beheer'),
     'Users' => $this->url('beheer/users'),
 ]);
 ?>
 
-<hgroup class="col-sm-12 col-md-12 col-lg-12">
-    <h1 id="index">MANAGE USERS</h1>
-</hgroup>
+<!-- Page Header -->
+<div class="row">
+    <h1 class="col">USER BEHEER</h1>
+</div>
+<!-- Breadcrumbs -->
+<div class="row">
+    <div class="col">
+        <?= $this->pageBreadcrumbs()->render(); ?>
+    </div>
+</div>
 <div class="col-sm-12 col-md-12 col-lg-12">
     <p>
         <a class="btn btn-default" href="
