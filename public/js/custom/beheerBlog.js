@@ -38,61 +38,6 @@ $(document).ready(function () {
         setBlogOnline();
     });
 
-//Ajax function to add youTube video
-    $('button#saveYouTubeVideo').on("click", function () {
-        var youTubeLink = $('input[name=youtubevideolink]').val();
-        var blogId = $('input[name=blogId]').val();
-        if (youTubeLink != '') {
-            $.ajax({
-                type: 'POST',
-                data: {
-                    blogId: blogId,
-                    youTubeLink: youTubeLink
-                },
-                url: "/blogajaxbeheer/addYouTubeVideo",
-                async: true,
-                success: function (data) {
-                    if (data.succes === true) {
-                        var html = '';
-                        html = '<div id="youTubeFrame' + data.YouTubeData.youTubeId + '" class="col-sm-12 col-md-4 col-lg-4" style="margin-bottom:10px;">';
-                        html += '<span data-youtubeid="' + data.YouTubeData.youTubeId + '" class="glyphicon glyphicon-remove removeYouTubeVideo" aria-hidden="true"></span>';
-                        html += '<img class="img-responsive" src="' + data.YouTubeData.imageurl + '" alt="' + data.YouTubeData.title + '" />';
-                        html += data.YouTubeData.title.substring(0, 25) + '&hellip;';
-                        html += '</div>';
-                        $(html).hide().appendTo('div#youTubeVideosFrame').fadeIn(300);
-                        //$('div#youTubeVideosFrame').append(html);
-                        $('input[name=youtubevideolink]').val('');
-                    } else {
-                        alert(data.errorMessage);
-                    }
-                }
-            });
-        }
-    });
-
-//Ajax function to remove youTube video
-    $(document).on("click", "span.removeYouTubeVideo", function () {
-        var youTubeId = $(this).data('youtubeid');
-        $.ajax({
-            type: 'POST',
-            data: {
-                youTubeId: youTubeId
-            },
-            url: "/blogajaxbeheer/removeYouTubeVideo",
-            async: true,
-            success: function (data) {
-                if (data.succes === true) {
-                    $('#youTubeFrame' + youTubeId).fadeOut(300, function () {
-                        $('#youTubeFrame' + youTubeId).remove();
-                    })
-                } else {
-                    alert(data.errorMessage);
-                }
-            }
-        });
-
-    });
-
 //Create well design file upload form file
     $(document).on('change', ':file', function () {
         var input = $(this),

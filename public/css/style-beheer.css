@@ -171,15 +171,6 @@ span.blogOfflineActive {
     color:#e1e8ed;
 }
 
-/* You tube video's */
-
-span.removeYouTubeVideo {
-    position:absolute;
-    top:5px;
-    right:20px;
-    cursor:pointer;
-    color:red;
-}
 
 /* Images */
 
