@@ -1,6 +1,7 @@
 <?php
+$this->layout('layout/beheer');
 $this->headTitle('Edit Permission');
-
+$this->pageBreadcrumbs()->setLayout('beheer');
 $this->mainMenu()->setActiveItemId('overviewpermissions');
 
 $this->pageBreadcrumbs()->setItems([
@@ -20,32 +21,41 @@ $form->get('description')->setAttributes([
 ]);
 
 $form->get('submit')
-        ->setAttributes(['class' => 'btn btn-primary'])
-        ->setValue('Save');
+    ->setAttributes(['class' => 'btn btn-primary'])
+    ->setValue('Save');
 
 $form->prepare();
 ?>
-<hgroup class="col-sm-12 col-md-12 col-lg-12">
-    <h1 id="index">Edit Permission</h1>
-</hgroup>
-<div class="col-sm-12 col-md-12 col-lg-12">
-    <?= $this->form()->openTag($form); ?>
-
-    <div class="form-group">
-        <?= $this->formLabel($form->get('name')); ?>
-        <?= $this->formElement($form->get('name')); ?>
-        <?= $this->formElementErrors($form->get('name')); ?>                  
+<!-- Page Header -->
+<div class="row">
+    <h1 class="col">EDIT PERMISSIONS</h1>
+</div>
+<!-- Breadcrumbs -->
+<div class="row">
+    <div class="col">
+        <?= $this->pageBreadcrumbs()->render(); ?>
     </div>
+</div>
+<div class="row">
+    <div class="col">
+        <?= $this->form()->openTag($form); ?>
 
-    <div class="form-group">
-        <?= $this->formLabel($form->get('description')); ?>
-        <?= $this->formElement($form->get('description')); ?>
-        <?= $this->formElementErrors($form->get('description')); ?>                  
+        <div class="form-group">
+            <?= $this->formLabel($form->get('name')); ?>
+            <?= $this->formElement($form->get('name')); ?>
+            <?= $this->formElementErrors($form->get('name')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('description')); ?>
+            <?= $this->formElement($form->get('description')); ?>
+            <?= $this->formElementErrors($form->get('description')); ?>
+        </div>
+
+        <?= $this->formElement($form->get('csrf')); ?>
+
+        <?= $this->formElement($form->get('submit')); ?>
+
+        <?= $this->form()->closeTag(); ?>
     </div>
-
-    <?= $this->formElement($form->get('csrf')); ?>
-
-    <?= $this->formElement($form->get('submit')); ?>
-
-    <?= $this->form()->closeTag(); ?>
-</div>   
+</div>

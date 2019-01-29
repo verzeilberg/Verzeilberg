@@ -3,7 +3,7 @@ $this->layout('layout/beheer');
 $this->headTitle('Add User');
 
 $this->mainMenu()->setActiveItemId('adduser');
-
+$this->pageBreadcrumbs()->setLayout('beheer');
 $this->pageBreadcrumbs()->setItems([
     'Beheer' => $this->url('beheer'),
     'Users' => $this->url('beheer/users'),
@@ -43,54 +43,63 @@ $form->get('submit')->setAttributes(['class' => 'btn btn-primary']);
 $form->prepare();
 ?>
 
-<hgroup class="col-sm-12 col-md-12 col-lg-12">
-    <h1 id="index">ADD USERS</h1>
-</hgroup>
-<div class="col-sm-12 col-md-12 col-lg-12">
-    <p>
-        Please fill out the following form and click the <i>Create</i> button.
-    </p>
-
-
-    <?= $this->form()->openTag($form); ?>
-
-    <div class="form-group">
-        <?= $this->formLabel($form->get('email')); ?>
-        <?= $this->formElement($form->get('email')); ?>
-        <?= $this->formElementErrors($form->get('email')); ?>                  
+<!-- Page Header -->
+<div class="row">
+    <h1 class="col">ADD USER</h1>
+</div>
+<!-- Breadcrumbs -->
+<div class="row">
+    <div class="col">
+        <?= $this->pageBreadcrumbs()->render(); ?>
     </div>
+</div>
+<div class="row">
+    <div class="col">
+        <p>
+            Please fill out the following form and click the <i>Create</i> button.
+        </p>
 
-    <div class="form-group">
-        <?= $this->formLabel($form->get('full_name')); ?>
-        <?= $this->formElement($form->get('full_name')); ?>
-        <?= $this->formElementErrors($form->get('full_name')); ?>                  
+
+        <?= $this->form()->openTag($form); ?>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('email')); ?>
+            <?= $this->formElement($form->get('email')); ?>
+            <?= $this->formElementErrors($form->get('email')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('full_name')); ?>
+            <?= $this->formElement($form->get('full_name')); ?>
+            <?= $this->formElementErrors($form->get('full_name')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('password')); ?>
+            <?= $this->formElement($form->get('password')); ?>
+            <?= $this->formElementErrors($form->get('password')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('confirm_password')); ?>
+            <?= $this->formElement($form->get('confirm_password')); ?>
+            <?= $this->formElementErrors($form->get('confirm_password')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('status')); ?>
+            <?= $this->formElement($form->get('status')); ?>
+            <?= $this->formElementErrors($form->get('status')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('roles')); ?>
+            <?= $this->formElement($form->get('roles')); ?>
+            <?= $this->formElementErrors($form->get('roles')); ?>
+        </div>
+
+        <?= $this->formElement($form->get('submit')); ?>
+
+        <?= $this->form()->closeTag(); ?>
     </div>
-    
-    <div class="form-group">
-        <?= $this->formLabel($form->get('password')); ?>
-        <?= $this->formElement($form->get('password')); ?>
-        <?= $this->formElementErrors($form->get('password')); ?>                  
-    </div>
-
-    <div class="form-group">
-        <?= $this->formLabel($form->get('confirm_password')); ?>
-        <?= $this->formElement($form->get('confirm_password')); ?>
-        <?= $this->formElementErrors($form->get('confirm_password')); ?>                  
-    </div>
-
-    <div class="form-group">
-        <?= $this->formLabel($form->get('status')); ?>
-        <?= $this->formElement($form->get('status')); ?>
-        <?= $this->formElementErrors($form->get('status')); ?>                  
-    </div>
-
-    <div class="form-group">
-        <?= $this->formLabel($form->get('roles')); ?>
-        <?= $this->formElement($form->get('roles')); ?>
-        <?= $this->formElementErrors($form->get('roles')); ?>                  
-    </div>
-
-    <?= $this->formElement($form->get('submit')); ?>
-
-    <?= $this->form()->closeTag(); ?>
-</div>   
+</div>

@@ -3,7 +3,7 @@ $this->layout('layout/beheer');
 $this->headTitle('Edit User');
 
 $this->mainMenu()->setActiveItemId('overviewusers');
-
+$this->pageBreadcrumbs()->setLayout('beheer');
 $this->pageBreadcrumbs()->setItems([
     'Beheer' => $this->url('beheer'),
     'Users' => $this->url('beheer/users'),
@@ -29,44 +29,52 @@ $form->get('roles')->setAttributes([
 ]);
 
 $form->get('submit')
-        ->setAttributes(['class' => 'btn btn-primary'])
-        ->setValue('Save');
+    ->setAttributes(['class' => 'btn btn-primary'])
+    ->setValue('Save');
 
 $form->prepare();
 ?>
 
-
-<hgroup class="col-sm-12 col-md-12 col-lg-12">
-    <h1 id="index">EDIT USER <?= $this->escapeHtml($user->getEmail()) ?></h1>
-</hgroup>
-<div class="col-sm-12 col-md-12 col-lg-12">
-    <?= $this->form()->openTag($form); ?>
-
-    <div class="form-group">
-        <?= $this->formLabel($form->get('email')); ?>
-        <?= $this->formElement($form->get('email')); ?>
-        <?= $this->formElementErrors($form->get('email')); ?>                  
+<!-- Page Header -->
+<div class="row">
+    <h1 class="col" id="index">EDIT USER <?= $this->escapeHtml($user->getEmail()) ?></h1>
+</div>
+<!-- Breadcrumbs -->
+<div class="row">
+    <div class="col">
+        <?= $this->pageBreadcrumbs()->render(); ?>
     </div>
+</div>
+<div class="row">
+    <div class="col">
+        <?= $this->form()->openTag($form); ?>
 
-    <div class="form-group">
-        <?= $this->formLabel($form->get('full_name')); ?>
-        <?= $this->formElement($form->get('full_name')); ?>
-        <?= $this->formElementErrors($form->get('full_name')); ?>                  
+        <div class="form-group">
+            <?= $this->formLabel($form->get('email')); ?>
+            <?= $this->formElement($form->get('email')); ?>
+            <?= $this->formElementErrors($form->get('email')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('full_name')); ?>
+            <?= $this->formElement($form->get('full_name')); ?>
+            <?= $this->formElementErrors($form->get('full_name')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('status')); ?>
+            <?= $this->formElement($form->get('status')); ?>
+            <?= $this->formElementErrors($form->get('status')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('roles')); ?>
+            <?= $this->formElement($form->get('roles')); ?>
+            <?= $this->formElementErrors($form->get('roles')); ?>
+        </div>
+
+        <?= $this->formElement($form->get('submit')); ?>
+
+        <?= $this->form()->closeTag(); ?>
     </div>
-
-    <div class="form-group">
-        <?= $this->formLabel($form->get('status')); ?>
-        <?= $this->formElement($form->get('status')); ?>
-        <?= $this->formElementErrors($form->get('status')); ?>                  
-    </div>
-
-    <div class="form-group">
-        <?= $this->formLabel($form->get('roles')); ?>
-        <?= $this->formElement($form->get('roles')); ?>
-        <?= $this->formElementErrors($form->get('roles')); ?>                  
-    </div>
-
-    <?= $this->formElement($form->get('submit')); ?>
-
-    <?= $this->form()->closeTag(); ?>
-</div>   
+</div>

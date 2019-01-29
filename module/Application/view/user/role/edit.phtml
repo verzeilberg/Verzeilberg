@@ -1,5 +1,6 @@
 <?php
 $this->layout('layout/beheer');
+$this->pageBreadcrumbs()->setLayout('beheer');
 $this->headTitle('Edit Role');
 
 $this->mainMenu()->setActiveItemId('roles');
@@ -31,17 +32,26 @@ $form->get('submit')
 
 $form->prepare();
 ?>
-
-<h1>Edit Role <?= $this->escapeHtml($role->getName()) ?></h1>
-
-<p>
-<a class="btn btn-default" href="<?= $this->url('roles', ['action'=>'editPermissions', 'id'=>$role->getId()]) ?>">
-  <span class="glyphicon glyphicon-check"></span> Edit Permissions
+<!-- Page Header -->
+<div class="row">
+    <h1 class="col">Edit Role <?= $this->escapeHtml($role->getName()) ?></h1>
+</div>
+<!-- Breadcrumbs -->
+<div class="row">
+    <div class="col">
+        <?= $this->pageBreadcrumbs()->render(); ?>
+    </div>
+</div>
+<div class="row mb-2">
+    <div class="col">
+<a class="btn btn-secondary" href="<?= $this->url('roles', ['action'=>'editPermissions', 'id'=>$role->getId()]) ?>">
+    <i class="fas fa-edit"></i> Edit Permissions
 </a>
-</p>
+    </div>
+</div>
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col">
         <?= $this->form()->openTag($form); ?>
         
         <div class="form-group">

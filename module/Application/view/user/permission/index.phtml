@@ -1,6 +1,7 @@
 <?php
+$this->layout('layout/beheer');
 $this->headTitle('Permissions');
-
+$this->pageBreadcrumbs()->setLayout('beheer');
 $this->mainMenu()->setActiveItemId('overviewpermissions');
 
 $this->pageBreadcrumbs()->setItems([
@@ -8,55 +9,67 @@ $this->pageBreadcrumbs()->setItems([
     'Permissions' => $this->url('beheer/permissions'),
 ]);
 ?>
-
-
-<?= $this->flashMessenger()->render('error', ['alert', 'alert-warning']); ?>
-<?= $this->flashMessenger()->render('success', ['alert', 'alert-success']); ?>
-<?= $this->flashMessenger()->render('info', ['alert', 'alert-info']); ?>
-
-<hgroup class="col-sm-12 col-md-12 col-lg-12">
-    <h1 id="index">Manage Permissions</h1>
-</hgroup>
-<div class="col-sm-12 col-md-12 col-lg-12">
-    <p>
-        <a class="btn btn-default" href="
+<!-- Page Header -->
+<div class="row">
+    <h1 class="col">PERMISSIONS BEHEER</h1>
+</div>
+<!-- Breadcrumbs -->
+<div class="row">
+    <div class="col">
+        <?= $this->pageBreadcrumbs()->render(); ?>
+    </div>
+</div>
+<!-- Page header options -->
+<div class="row mb-3">
+    <div class="col">
+        <a class="btn btn-secondary" href="
            <?= $this->url('beheer/permissions', ['action' => 'add']); ?>">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Permission
+            <i class="fas fa-plus-square"></i> New Permission
         </a>
-    </p>
-    <table class="table table-striped">
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Date Created</th>
-            <th>Actions</th>        
-        </tr>
-        <?php foreach ($permissions as $permission): ?>
-
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <table class="table table-dark table-sm table-bordered table-hover table-striped">
+            <thead class="thead-dark">
             <tr>
-                <td><?= $this->escapeHtml($permission->getId()); ?></td>
-                <td>
-                    <a href="<?= $this->url('beheer/permissions', ['action' => 'view', 'id' => $permission->getId()]); ?>">
-                        <?= $this->escapeHtml($permission->getName()); ?>
-                    </a> 
-                </td>
-                <td><?= $this->escapeHtml($permission->getDescription()); ?></a> 
-                </td>
-                <td><nobr><?= (is_object($permission->getDateCreated()) ? $permission->getDateCreated()->format('d-m-Y') : ''); ?></nobr></td>        
-            <td>
-            <nobr>
-                <a class="btn btn-info" href="<?= $this->url('beheer/permissions', ['action' => 'edit', 'id' => $permission->getId()]);
-                        ?>">
-                    <span class="glyphicon glyphicon-pencil" ></span> Edit
-                </a>
-                <a class="btn btn-danger" href="<?= $this->url('beheer/permissions', ['action' => 'delete', 'id' => $permission->getId()]);
-                        ?>">
-                    <span class="glyphicon glyphicon-remove"></span> Delete
-                </a>
-            </nobr>
-            </td>    
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Date Created</th>
+                <th class="text-center"><i class="fas fa-cogs"></i></th>
             </tr>
-        <?php endforeach; ?>   
-    </table>
+            </thead>
+            <tbody>
+            <?php foreach ($permissions as $permission): ?>
+
+                <tr>
+                    <td><?= $this->escapeHtml($permission->getId()); ?></td>
+                    <td>
+                        <a href="<?= $this->url('beheer/permissions', ['action' => 'view', 'id' => $permission->getId()]); ?>">
+                            <?= $this->escapeHtml($permission->getName()); ?>
+                        </a>
+                    </td>
+                    <td><?= $this->escapeHtml($permission->getDescription()); ?></a>
+                    </td>
+                    <td>
+                        <nobr><?= (is_object($permission->getDateCreated()) ? $permission->getDateCreated()->format('d-m-Y') : ''); ?></nobr>
+                    </td>
+                    <td class="text-center">
+                            <a class="btn btn-sm btn-secondary"
+                               href="<?= $this->url('beheer/permissions', ['action' => 'edit', 'id' => $permission->getId()]);
+                               ?>">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a class="btn btn-sm btn-danger"
+                               href="<?= $this->url('beheer/permissions', ['action' => 'delete', 'id' => $permission->getId()]);
+                               ?>">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 </div>
