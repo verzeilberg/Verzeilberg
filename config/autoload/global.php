@@ -62,6 +62,14 @@ return [
         'consumer_secret' => 'CjpZhinCu6jRxc0wTGwIJyGko3NxO1QDtHZEZFl6EE',
         'userId' => '320650214'
     ],
+    'youtube_credentials' => [
+       'consumer_key' => 'AIzaSyBd0ib8T5YC8FG_zRH-IxOA8blnLvqJ1xM'
+    ],
+    'email_settings' => [
+        'server' => 'imap.zeke.nl',
+        'user' => 'sander@verzeilberg.nl',
+        'password' => 'Joker512011'
+    ],
     'imageUploadSettings' => [
         'event' => [
             'uploadFolder' => 'img/userFiles/event/original/',

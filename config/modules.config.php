@@ -34,6 +34,7 @@ return [
     'User',
     'Blog',
     'Agenda',
+    //'GoogleAgendaApi',
     'Email',
     'UploadFiles',
     'UploadImages',

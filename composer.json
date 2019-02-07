@@ -40,7 +40,8 @@
         "zendframework/zend-mail": "^2.8",
         "phpoffice/phpspreadsheet": "^1.1",
         "rwoverdijk/assetmanager": "^1.7",
-        "oro/doctrine-extensions": "^1.2"
+        "oro/doctrine-extensions": "^1.2",
+        "google/apiclient": "^2.2.2"
     },
     "autoload": {
         "psr-4": {
