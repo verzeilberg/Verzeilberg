@@ -1,12 +1,12 @@
 html {
-    overflow-y: visible;
+    overflow-y: scroll;
 }
 
 body {
     padding-top: 0;
     padding-bottom: 40px;
     background:#272b30;
-    color:#fff; 
+    color:#fff;
 }
 
 h1 {
