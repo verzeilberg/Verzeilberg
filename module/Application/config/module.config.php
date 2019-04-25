@@ -341,7 +341,7 @@ return [
         'controllers' => [
             Controller\IndexController::class => [
                 // Allow anyone to visit "index" and "about" actions
-                ['actions' => ['index', 'about', 'events', 'event', 'getEventLocations', 'user'], 'allow' => '*'],
+                ['actions' => ['index', 'about', 'events', 'event', 'getEventLocations', 'user', 'getLocations'], 'allow' => '*'],
             // Allow authorized users to visit "profiel" action
             //['actions' => ['profiel'], 'allow' => '@']
             ],

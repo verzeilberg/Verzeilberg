@@ -60,7 +60,6 @@ class IndexController extends AbstractActionController {
         $this->vhm->get('inlineScript')->appendFile('/js/custom/index.js');
         $this->vhm->get('inlineScript')->appendFile('/js/flipClock/flipclock.js');
         $this->vhm->get('headLink')->appendStylesheet('/css/flipClock/flipclock.css');
-        $this->vhm->get('headLink')->appendStylesheet('/css/weather/weather.css');
         $post = false;
         $blogs = $this->blogService->getOnlineBlogsBasedOnStartAndOffSet(0, 4);
 
@@ -136,7 +135,9 @@ class IndexController extends AbstractActionController {
      * This is the "about" action. It is used to display the "About" page.
      */
     public function eventsAction() {
-        $this->vhm->get('inlineScript')->appendFile('/js/eventsFrontEnd.js');
+        $this->vhm->get('headScript')->appendFile('/js/eventsFrontEnd.js');
+        $this->vhm->get('headScript')->appendFile('/js/lodash.js');
+        $this->vhm->get('headScript')->appendFile('/js/moment.js');
         $this->vhm->get('headLink')->appendStylesheet('/css/events.css');
         $currentYear = new \DateTime();
         $year = $currentYear->format('Y');
@@ -155,9 +156,7 @@ class IndexController extends AbstractActionController {
         // Return variables to view script with the help of
         // ViewObject variable container
         return new ViewModel(array(
-            'events' => $events,
             'categories' => $categories,
-            'locations' => json_encode($locations),
             'year' => $year,
             'categoryId' => $categoryId,
             'years' => $years
@@ -197,6 +196,29 @@ class IndexController extends AbstractActionController {
         return new JsonModel(array(
             'succes' => $succes,
             'event' => $eventArray,
+            'errorMessage' => $errorMessage
+        ));
+    }
+
+    public function getLocationsAction()
+    {
+        $success = true;
+        $errorMessage = null;
+
+        $year = $this->getRequest()->getPost('year');
+        $categoryId = $this->getRequest()->getPost('category');
+
+        $events = $this->eventService->getEventsByYearAndCategory($year, $categoryId);
+        $categories = $this->eventCategoryService->getEventCategories();
+        $years = $this->eventService->getYearsOfEvents();
+        $locations = $this->eventService->createEventsArrayForMaps($events);
+        $events = $this->eventService->getEventsByYearAndCategory($year, $categoryId, true);
+        return new JsonModel(array(
+            'success' => $success,
+            'years' => $years,
+            'categories' => $categories,
+            'locations' => $locations,
+            'events' => $events,
             'errorMessage' => $errorMessage
         ));
     }
