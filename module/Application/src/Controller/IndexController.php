@@ -213,6 +213,7 @@ class IndexController extends AbstractActionController {
         $years = $this->eventService->getYearsOfEvents();
         $locations = $this->eventService->createEventsArrayForMaps($events);
         $events = $this->eventService->getEventsByYearAndCategory($year, $categoryId, true);
+
         return new JsonModel(array(
             'success' => $success,
             'years' => $years,

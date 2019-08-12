@@ -14,7 +14,7 @@
     <!-- Le styles -->
     <?=
     $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
-        ->prependStylesheet('https://use.fontawesome.com/releases/v5.0.13/css/all.css')
+        ->prependStylesheet('https://use.fontawesome.com/releases/v5.9.0/css/all.css')
         ->prependStylesheet($this->basePath('css/style-beheer.css'))
         ->prependStylesheet($this->basePath('css/bootstrap-4.0.0/bootstrap.css'))
     ?>
@@ -24,7 +24,7 @@
     $this->headScript()
         ->prependFile($this->basePath('/js/ckEditor/ckeditor.js'))
         ->prependFile($this->basePath('js/custom/beheer.js'))
-        ->prependFile($this->basePath('js/bootstrap-4.0.0/bootstrap.js'))
+        ->prependFile($this->basePath('js/bootstrap-4.0.0/bootstrap.bundle.js'))
         ->prependFile($this->basePath('js/jquery-3.1.0.min.js'))
     ?>
 </head>

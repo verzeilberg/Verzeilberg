@@ -29,6 +29,7 @@
     "zendframework/zend-authentication": "^2.5",
     "zendframework/zend-navigation": "^2.8",
     "zendframework/zend-mvc-plugins": "^1.0.1",
+    "zendframework/zend-mvc-console": "^1.2",
     "zendframework/zend-session": "^2.7.1",
     "doctrine/migrations": "<=v1.5.0",
     "zendframework/zend-math": "^3.0",
@@ -42,7 +43,9 @@
     "rwoverdijk/assetmanager": "^1.7",
     "oro/doctrine-extensions": "^1.2",
     "google/apiclient": "^2.2.2",
-    "zendframework/zend-console": "^2.8"
+    "zendframework/zend-console": "^2.8",
+    "basvandorst/StravaPHP": "1.2.0",
+    "emcconville/google-map-polyline-encoding-tool" : ">=1.2.1"
   },
   "autoload": {
     "psr-4": {
@@ -59,7 +62,9 @@
       "GoogleAgendaApi\\": "module/GoogleAgendaApi/src/",
       "Search\\": "module/Search/src/",
       "Event\\": "module/Event/src/",
-      "CheckList\\": "module/CheckList/src/"
+      "CheckList\\": "module/CheckList/src/",
+      "BitlyShortener\\": "module/BitlyShortener/src/",
+      "StravaApi\\": "module/StravaApi/src/"
     }
   },
   "autoload-dev": {

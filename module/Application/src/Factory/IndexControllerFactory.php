@@ -20,9 +20,15 @@ class IndexControllerFactory implements FactoryInterface {
         $twitterService = new twitterService();
         $twitterOathService = new twitterOathService($config, $twitterService);
         $eventService = new eventService();
-        $imageService = new imageService($em, $config);
+        $imageService = new imageService($entityManager, $config);
         
-        return new IndexController($entityManager, $viewHelperManager, $twitterOathService, $twitterService, $contactService, $eventService, $imageService);
+        return new IndexController(
+            $entityManager,
+            $viewHelperManager,
+            $twitterOathService,
+            $twitterService,
+            $eventService,
+            $imageService);
     }
 
 }

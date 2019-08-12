@@ -6,7 +6,8 @@ namespace Application\Service;
  * This service is responsible for determining which items should be in the main menu.
  * The items may be different depending on whether the user is authenticated or not.
  */
-class BeheerNavManager {
+class BeheerNavManager
+{
 
     /**
      * Auth service.
@@ -29,7 +30,8 @@ class BeheerNavManager {
     /**
      * Constructs the service.
      */
-    public function __construct($authService, $urlHelper, $rbacManager) {
+    public function __construct($authService, $urlHelper, $rbacManager)
+    {
         $this->authService = $authService;
         $this->urlHelper = $urlHelper;
         $this->rbacManager = $rbacManager;
@@ -38,7 +40,8 @@ class BeheerNavManager {
     /**
      * This method returns menu items depending on whether user has logged in or not.
      */
-    public function getMenuItems() {
+    public function getMenuItems()
+    {
         $url = $this->urlHelper;
         $items = [];
 
@@ -64,13 +67,38 @@ class BeheerNavManager {
                     'link' => $url('beheer')
                 ];
             }
-            
-             if ($this->rbacManager->isGranted(null, 'email.manage')) {
+
+            if ($this->rbacManager->isGranted(null, 'email.manage')) {
                 $items[] = [
                     'id' => 'email',
                     'label' => 'E-mail',
                     'link' => $url('beheer/email')
                 ];
+            }
+
+            if ($this->rbacManager->isGranted(null, 'strava.manage')) {
+                $items[] = [
+                    'id' => 'strava',
+                    'label' => 'Strava',
+                    'dropdown' => [
+                        [
+                            'id' => 'overviewstrava',
+                            'label' => 'Overview',
+                            'link' => $url('beheer/strava')
+                        ],
+                        [
+                            'id' => 'activitiesstrava',
+                            'label' => 'Activiteiten',
+                            'link' => $url('beheer/strava', ['action' => 'activiteiten'])
+                        ],
+                        [
+                            'id' => 'importstrava',
+                            'label' => 'Import',
+                            'link' => $url('beheer/stravaimport')
+                        ],
+                    ]
+                ];
+
             }
 
             if ($this->rbacManager->isGranted(null, 'user.manage')) {
@@ -177,7 +205,7 @@ class BeheerNavManager {
                     'link' => $url('beheer/contact')
                 ];
             }
-            
+
             if ($this->rbacManager->isGranted(null, 'search.manage')) {
                 $items[] = [
                     'id' => 'search',
@@ -185,7 +213,7 @@ class BeheerNavManager {
                     'link' => $url('beheer/search')
                 ];
             }
-            
+
             if ($this->rbacManager->isGranted(null, 'event.manage')) {
                 $items[] = [
                     'id' => 'event',
@@ -213,10 +241,10 @@ class BeheerNavManager {
                         ],
                     ]
                 ];
-                
-                
+
+
             }
-            
+
             if ($this->rbacManager->isGranted(null, 'checklist.manage')) {
                 $items[] = [
                     'id' => 'checklist',
@@ -240,7 +268,7 @@ class BeheerNavManager {
                     ]
                 ];
             }
-            
+
             if ($this->rbacManager->isGranted(null, 'checklist.manage')) {
                 $items[] = [
                     'id' => 'images',

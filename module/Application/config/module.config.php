@@ -1,11 +1,4 @@
 <?php
-
-/**
- * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
- * @copyright Copyright (c) 2005-2016 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- */
-
 namespace Application;
 
 use Zend\Router\Http\Literal;
@@ -14,6 +7,21 @@ use Zend\ServiceManager\Factory\InvokableFactory;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 
 return [
+    'console' => array(
+        'router' => array(
+            'routes' => array(
+                'import-questions' => array(
+                    'options' => array(
+                        'route' => 'import-questions [<file>]',
+                        'defaults' => array(
+                            'controller' => Controller\CliController::class,
+                            'action' => 'importPppLibraryQuestions'
+                        )
+                    )
+                ),
+            )
+        )
+    ),
     'router' => [
         'routes' => [
             'home' => [
@@ -278,6 +286,34 @@ return [
                             ],
                             'defaults' => [
                                 'controller' => 'imagesbeheer',
+                                'action' => 'index',
+                            ],
+                        ],
+                    ],
+                    'strava' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route' => '/strava[/:action[/:id]]',
+                            'constraints' => [
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'id' => '[0-9]*',
+                            ],
+                            'defaults' => [
+                                'controller' => 'stravabeheer',
+                                'action' => 'index',
+                            ],
+                        ],
+                    ],
+                    'stravaimport' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route' => '/stravaimport[/:action[/:id]]',
+                            'constraints' => [
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'id' => '[0-9]*',
+                            ],
+                            'defaults' => [
+                                'controller' => 'stravaimportbeheer',
                                 'action' => 'index',
                             ],
                         ],

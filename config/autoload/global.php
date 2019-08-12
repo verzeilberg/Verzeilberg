@@ -55,31 +55,4 @@ return [
             ],
         ],
     ],
-    'twitter_credentials' => [
-        'oauth_access_token' => '320650214-nH3o3BjVYfTP9HfSWYmFkBUcoyC5HwQ2qUhz8yAz',
-        'oauth_access_token_secret' => '8JMlfd5bsd7LrFhHvityFmtUCGiizUvNjeVUqcDpw',
-        'consumer_key' => 'YguWLyI3fltBiq1VSqfQQ',
-        'consumer_secret' => 'CjpZhinCu6jRxc0wTGwIJyGko3NxO1QDtHZEZFl6EE',
-        'userId' => '320650214'
-    ],
-    'youtube_credentials' => [
-       'consumer_key' => 'AIzaSyBd0ib8T5YC8FG_zRH-IxOA8blnLvqJ1xM'
-    ],
-    'email_settings' => [
-        'server' => 'imap.zeke.nl',
-        'user' => 'sander@verzeilberg.nl',
-        'password' => 'Joker512011'
-    ],
-    'imageUploadSettings' => [
-        'event' => [
-            'uploadFolder' => 'img/userFiles/event/original/',
-            'uploadeFileSize' => '5000000000000000',
-            'allowedImageTypes' => [
-                'image/jpeg',
-                'image/png',
-                'image/gif'
-            ],
-        ],
-        'rootPath' => $_SERVER['DOCUMENT_ROOT'] . '/img/userFiles',
-    ],
 ];

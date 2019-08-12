@@ -37,3 +37,6 @@
 [submodule "YouTube"]
     path = module/YouTube
     url = https://github.com/verzeilberg/YouTube.git
+[submodule "module/StravaApi"]
+	path = module/StravaApi
+	url = git://github.com/verzeilberg/StravaApi.git

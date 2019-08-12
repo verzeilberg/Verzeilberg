@@ -141,17 +141,9 @@ input[name=blogImage] {
     width:150px;
 }
 
-span.setOnlineOffline {
+.setOnlineOffline {
     font-size:22px;
     cursor:pointer;
-}
-
-span.blogOnlineActive {
-    color:green;
-}
-
-span.blogOfflineActive {
-    color:red;
 }
 
 .blogOptions button {
@@ -161,6 +153,10 @@ span.blogOfflineActive {
 
 .blogOptions button span {
     float: right;
+}
+
+.checkboxes > label {
+    display:block !important;
 }
 
 .fa-twitter.blue {
@@ -199,45 +195,10 @@ ul.flashMessages li {
     font-family:Helvetica, Verdana, Arial;
 }
 
-
-div.alert {
-    margin-top:15px;
-    -webkit-animation: fadeout 2s; /* Safari, Chrome and Opera > 12.1 */
-    -moz-animation: fadeout 2s; /* Firefox < 16 */
-    -ms-animation: fadeout 2s; /* Internet Explorer */
-    -o-animation: fadeout 2s; /* Opera < 12.1 */
-    animation: fadeout 2s;
-    opacity:0;
+#formErrorMessage {
+    display:none;
 }
 
-@keyframes fadeout {
-    from { opacity: 1; }
-    to   { opacity: 0; }
-}
-
-/* Firefox < 16 */
-@-moz-keyframes fadeout {
-    from { opacity: 1; }
-    to   { opacity: 0; }
-}
-
-/* Safari, Chrome and Opera > 12.1 */
-@-webkit-keyframes fadeout {
-    from { opacity: 1; }
-    to   { opacity: 0; }
-}
-
-/* Internet Explorer */
-@-ms-keyframes fadeout {
-    from { opacity: 1; }
-    to   { opacity: 0; }
-}
-
-/* Opera < 12.1 */
-@-o-keyframes fadeout {
-    from { opacity: 1; }
-    to   { opacity: 0; }
-}
 /* Footer */
 
 footer {

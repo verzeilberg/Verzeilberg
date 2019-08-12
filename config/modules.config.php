@@ -23,6 +23,7 @@ return [
     'Zend\Validator',
     'DoctrineModule',
     'DoctrineORMModule',
+    'Zend\Mvc\Console',
     'Zend\Cache',
     'Zend\Paginator',
     'Zend\I18n',
@@ -43,6 +44,8 @@ return [
     'Search',
     'Event',
     'CheckList',
+    'BitlyShortener',
+    'StravaApi',
     'AssetManager',
     'Application'
 ];
