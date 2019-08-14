@@ -17,7 +17,7 @@ class IndexControllerFactory implements FactoryInterface {
         $entityManager = $container->get('doctrine.entitymanager.orm_default');
         $viewHelperManager = $container->get('ViewHelperManager');
         $config = $container->get('config');
-        $twitterService = new twitterService();
+        $twitterService = new twitterService($config);
         $twitterOathService = new twitterOathService($config, $twitterService);
         $eventService = new eventService();
         $imageService = new imageService($entityManager, $config);
