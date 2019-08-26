@@ -42,4 +42,4 @@
 	url = https://github.com/verzeilberg/StravaApi.git
 [submodule "BitlyShortener"]
 	path = module/BitlyShortener
-	url = https://github.com/verzeilberg/BitlyShortenergit.git
+	url = https://github.com/verzeilberg/BitlyShortener.git
