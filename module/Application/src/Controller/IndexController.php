@@ -148,7 +148,7 @@ class IndexController extends AbstractActionController
                 'totalRunTime' => $totalRunTime,
                 'averageSpeed' => $averageSpeed,
                 'averageElevation' => $averageElevation,
-                'averageHeartbeat' => $averageHeartbeat,
+                'averageHeartbeat' => $averageHeartbeat
             )
         );
     }

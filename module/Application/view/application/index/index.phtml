@@ -4,7 +4,8 @@
         <h1 class="index-title">Verzeilberg</h1>
         <h3 class="index-sub-title">a (un)common name</h3>
         <br>
-        <a href="#about" class="btn btn-dark btn-lg js-scroll-trigger"><i class="fas fa-angle-double-down fa-3x"></i></a>
+        <a href="#about" class="btn btn-dark btn-lg js-scroll-trigger"><i
+                    class="fas fa-angle-double-down fa-3x"></i></a>
     </div>
 </header>
 
@@ -13,23 +14,34 @@
     <div class="container text-center">
         <h2><?php echo $this->translate('More?'); ?>&hellip;</h2>
         <p class="lead">
-            This is my personal website. You can find some information about me. But the important thing is that this is a playground for me to work with ZF3, Bootstrap, CSS, jQuery, JavaScript.
+            This is my personal website. You can find some information about me. But the important thing is that this is
+            a playground for me to work with ZF3, Bootstrap, CSS, jQuery, JavaScript.
         </p>
         <p class="lead">
-            The design may be a bit of a dissapointment, but I am not a designer. So any suggestion may come in handy. 
+            The design may be a bit of a dissapointment, but I am not a designer. So any suggestion may come in handy.
         </p>
         <p>
-            <a href="<?php echo $this->url('about'); ?>" class="btn btn-dark btn-lg js-scroll-trigger"><i class="fas fa-angle-double-right fa-3x"></i></a>
+            <a href="<?php echo $this->url('about'); ?>" class="btn btn-dark btn-lg js-scroll-trigger"><i
+                        class="fas fa-angle-double-right fa-3x"></i></a>
         </p>
     </div>
     <!-- /.container -->
 </section>
+<!-- Run stats -->
+<?php
+    echo $this->partial('partial/run_stats.phtml', array(
+        'totalRunActivities' => $totalRunActivities,
+        'totalRunDistance' => $totalRunDistance,
+        'totalRunTime' => $totalRunTime,
+        'averageSpeed' => $averageSpeed,
+        'averageElevation' => $averageElevation,
+        'averageHeartbeat' => $averageHeartbeat
+    ));
+?>
 
 <!-- Tweets -->
 <?php
-if (is_object($upcommingEvent)) {
     echo $this->partial('partial/tweets.phtml', array('tweets' => $tweets));
-}
 ?>
 <!-- Events -->
 <?php
