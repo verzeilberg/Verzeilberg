@@ -14,6 +14,7 @@ use Event\Service\eventService;
 use Event\Service\eventCategoryService;
 use UploadImages\Service\imageService;
 use CheckList\Service\checkListService;
+use StravaApi\Service\StravaDbService;
 
 class IndexControllerFactory implements FactoryInterface {
 
@@ -29,6 +30,7 @@ class IndexControllerFactory implements FactoryInterface {
         $eventCategoryService = new eventCategoryService($entityManager);
         $imageService = new imageService($entityManager, $config);
         $checkListService = new checkListService($entityManager);
+        $stravaDbService = new StravaDbService($entityManager);
         
         return new IndexController(
                 $entityManager, 
@@ -40,7 +42,8 @@ class IndexControllerFactory implements FactoryInterface {
                 $eventService, 
                 $imageService,
                 $checkListService,
-                $eventCategoryService
+                $eventCategoryService,
+                $stravaDbService
                 );
     }
 

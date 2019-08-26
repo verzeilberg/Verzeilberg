@@ -20,8 +20,10 @@ use User\Entity\User;
 use Blog\Entity\Blog;
 use Contact\Entity\Contact;
 use Zend\Session\Container;
+use StravaApi\Service\StravaDbService;
 
-class IndexController extends AbstractActionController {
+class IndexController extends AbstractActionController
+{
 
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -40,10 +42,22 @@ class IndexController extends AbstractActionController {
     protected $imageService;
     protected $checkListService;
     protected $eventCategoryService;
+    protected $stravaDbService;
 
     public function __construct(
-    $entityManager, $viewHelperManager, $twitterOathService, $twitterService, $contactService, $blogService, $eventService, $imageService, $checkListService, $eventCategoryService
-    ) {
+        $entityManager,
+        $viewHelperManager,
+        $twitterOathService,
+        $twitterService,
+        $contactService,
+        $blogService,
+        $eventService,
+        $imageService,
+        $checkListService,
+        $eventCategoryService,
+        StravaDbService $stravaDbService
+    )
+    {
         $this->em = $entityManager;
         $this->vhm = $viewHelperManager;
         $this->tos = $twitterOathService;
@@ -54,9 +68,11 @@ class IndexController extends AbstractActionController {
         $this->imageService = $imageService;
         $this->checkListService = $checkListService;
         $this->eventCategoryService = $eventCategoryService;
+        $this->stravaDbService = $stravaDbService;
     }
 
-    public function indexAction() {
+    public function indexAction()
+    {
         $this->vhm->get('inlineScript')->appendFile('/js/custom/index.js');
         $this->vhm->get('inlineScript')->appendFile('/js/flipClock/flipclock.js');
         $this->vhm->get('headLink')->appendStylesheet('/css/flipClock/flipclock.css');
@@ -110,21 +126,38 @@ class IndexController extends AbstractActionController {
 
         $upcommingEvent = $this->eventService->getUpcommingEvent();
 
+
+        //Running stats
+        $totalRunActivities = $this->stravaDbService->getTotalActivities('Run');
+        $totalRunDistance = $this->stravaDbService->getTotalDistance('Run');
+        $totalRunTime = $this->stravaDbService->getTotalTime('Run');
+        $averageSpeed = $this->stravaDbService->getAverageSpeed('Run');
+        $averageElevation = $this->stravaDbService->getAverageElevation('Run');
+        $averageHeartbeat = $this->stravaDbService->getAverageHeartbeat('Run');
+
+
         return new ViewModel(
-                array(
-            'tweets' => $tweetsArray,
-            'blogs' => $blogs,
-            'form' => $form,
-            'upcommingEvent' => $upcommingEvent,
-            'post' => $post
-                )
+            array(
+                'tweets' => $tweetsArray,
+                'blogs' => $blogs,
+                'form' => $form,
+                'upcommingEvent' => $upcommingEvent,
+                'post' => $post,
+                'totalRunActivities' => $totalRunActivities,
+                'totalRunDistance' => $totalRunDistance,
+                'totalRunTime' => $totalRunTime,
+                'averageSpeed' => $averageSpeed,
+                'averageElevation' => $averageElevation,
+                'averageHeartbeat' => $averageHeartbeat,
+            )
         );
     }
 
     /**
      * This is the "about" action. It is used to display the "About" page.
      */
-    public function aboutAction() {
+    public function aboutAction()
+    {
 
         // Return variables to view script with the help of
         // ViewObject variable container
@@ -134,7 +167,8 @@ class IndexController extends AbstractActionController {
     /**
      * This is the "about" action. It is used to display the "About" page.
      */
-    public function eventsAction() {
+    public function eventsAction()
+    {
         $this->vhm->get('headScript')->appendFile('/js/eventsFrontEnd.js');
         $this->vhm->get('headScript')->appendFile('/js/lodash.js');
         $this->vhm->get('headScript')->appendFile('/js/moment.js');
@@ -146,7 +180,7 @@ class IndexController extends AbstractActionController {
             $year = $this->getRequest()->getPost('year');
             $categoryId = $this->getRequest()->getPost('category');
         }
-        
+
         $events = $this->eventService->getEventsByYearAndCategory($year, $categoryId);
         $categories = $this->eventCategoryService->getEventCategories();
         $years = $this->eventService->getYearsOfEvents();
@@ -166,8 +200,9 @@ class IndexController extends AbstractActionController {
     /**
      * This is the "event" action. It is used to display the "event" page.
      */
-    public function eventAction() {
-        $id = (int) $this->getRequest()->getPost('eventId');
+    public function eventAction()
+    {
+        $id = (int)$this->getRequest()->getPost('eventId');
         $succes = true;
         $errorMessage = null;
         if (empty($id)) {
@@ -179,7 +214,7 @@ class IndexController extends AbstractActionController {
             $succes = false;
             $errorMessage = 'Event niet gevonden';
         }
-        
+
         $eventArray = [];
         $eventArray['eventStartDate'] = $event->getEventStartDate()->format('Y-m-d');
         $eventArray['eventEndDate'] = $event->getEventEndDate()->format('Y-m-d');
@@ -190,7 +225,7 @@ class IndexController extends AbstractActionController {
         $eventArray['categoryImage'] = $event->getCategory()->getFile()->getPath();
         $image = $event->getEventImage();
         $eventArray['eventImage'] = $image->getImageTypes('original')[0]->getFolder() . $image->getImageTypes('original')[0]->getFileName();
-        
+
         // Return variables to view script with the help of
         // ViewObject variable container
         return new JsonModel(array(
