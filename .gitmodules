@@ -9,7 +9,7 @@
     url = https://github.com/verzeilberg/Login.git
 [submodule "Event"]
     path = module/Event
-    url = https://github.com/verzeilberg/Event.git
+    url = https://github.com/verzeilberg/Events.git
 [submodule "Contact"]
     path = module/Contact
     url = https://github.com/verzeilberg/Contact.git
@@ -37,6 +37,9 @@
 [submodule "YouTube"]
     path = module/YouTube
     url = https://github.com/verzeilberg/YouTube.git
-[submodule "module/StravaApi"]
+[submodule "StravaApi"]
 	path = module/StravaApi
-	url = git://github.com/verzeilberg/StravaApi.git
+	url = https://github.com/verzeilberg/StravaApi.git
+[submodule "BitlyShortener"]
+	path = module/BitlyShortener
+	url = https://github.com/verzeilberg/BitlyShortenergit.git
