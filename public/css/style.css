@@ -157,7 +157,7 @@ hr.small {
 
 #menu-toggle {
     position: fixed;
-    z-index: 1;
+    z-index: 9999;
     top: 0;
     right: 0;
 }

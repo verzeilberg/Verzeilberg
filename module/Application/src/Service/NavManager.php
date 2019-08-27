@@ -51,7 +51,7 @@ class NavManager {
 
         $items[] = [
             'id' => 'about',
-            'label' => 'About',
+            'label' => 'Over',
             'link' => $url('home'),
             'fragment' => 'about'
         ];
@@ -60,7 +60,7 @@ class NavManager {
             'id' => 'tweets',
             'label' => 'Tweets',
             'link' => $url('home'),
-            'fragment' => 'services'
+            'fragment' => 'tweets'
         ];
         
         $items[] = [
@@ -74,7 +74,7 @@ class NavManager {
             'id' => 'blog',
             'label' => 'Blog',
             'link' => $url('home'),
-            'fragment' => 'portfolio'
+            'fragment' => 'blog'
         ];
         
         $items[] = [
