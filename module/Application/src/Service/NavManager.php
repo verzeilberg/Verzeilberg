@@ -55,6 +55,13 @@ class NavManager {
             'link' => $url('home'),
             'fragment' => 'about'
         ];
+
+        $items[] = [
+            'id' => 'runstats',
+            'label' => 'Run stats',
+            'link' => $url('home'),
+            'fragment' => 'stravaOverview'
+        ];
         
         $items[] = [
             'id' => 'tweets',

@@ -42,6 +42,7 @@
     });
 
     // Smooth scrolling using jQuery easing
+    /*
     $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function () {
         if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
             var target = $(this.hash);
@@ -54,6 +55,7 @@
             }
         }
     });
+    */
 
     // Closes responsive menu when a scroll trigger link is clicked
     $('.js-scroll-trigger').click(function () {

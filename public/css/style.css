@@ -315,7 +315,7 @@ span.blogTitle {
     text-align: center;
     color: #fff;
     text-decoration: none;
-    z-index: 9999999;
+    z-index: 9;
 }
 
 /* Blog */
