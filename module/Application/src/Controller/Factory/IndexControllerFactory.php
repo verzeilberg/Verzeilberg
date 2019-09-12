@@ -2,6 +2,7 @@
 
 namespace Application\Controller\Factory;
 
+use StravaApi\Entity\Activity;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Interop\Container\ContainerInterface;
@@ -31,6 +32,8 @@ class IndexControllerFactory implements FactoryInterface {
         $imageService = new imageService($entityManager, $config);
         $checkListService = new checkListService($entityManager);
         $stravaDbService = new StravaDbService($entityManager);
+
+        $activityRepository = $entityManager->getRepository(Activity::class);
         
         return new IndexController(
                 $entityManager, 
@@ -43,7 +46,8 @@ class IndexControllerFactory implements FactoryInterface {
                 $imageService,
                 $checkListService,
                 $eventCategoryService,
-                $stravaDbService
+                $stravaDbService,
+                $activityRepository
                 );
     }
 

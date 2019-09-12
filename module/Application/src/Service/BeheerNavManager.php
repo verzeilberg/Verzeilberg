@@ -96,6 +96,11 @@ class BeheerNavManager
                             'label' => 'Import',
                             'link' => $url('beheer/stravaimport')
                         ],
+                        [
+                            'id' => 'importstrava',
+                            'label' => 'Log',
+                            'link' => $url('beheer/stravalog')
+                        ],
                     ]
                 ];
 

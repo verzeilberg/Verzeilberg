@@ -43,6 +43,7 @@ class IndexController extends AbstractActionController
     protected $checkListService;
     protected $eventCategoryService;
     protected $stravaDbService;
+    protected $activityRepository;
 
     public function __construct(
         $entityManager,
@@ -55,7 +56,8 @@ class IndexController extends AbstractActionController
         $imageService,
         $checkListService,
         $eventCategoryService,
-        StravaDbService $stravaDbService
+        StravaDbService $stravaDbService,
+        $activityRepository
     )
     {
         $this->em = $entityManager;
@@ -69,6 +71,7 @@ class IndexController extends AbstractActionController
         $this->checkListService = $checkListService;
         $this->eventCategoryService = $eventCategoryService;
         $this->stravaDbService = $stravaDbService;
+        $this->activityRepository = $activityRepository;
     }
 
     public function indexAction()
@@ -76,6 +79,7 @@ class IndexController extends AbstractActionController
         $this->vhm->get('inlineScript')->appendFile('/js/custom/index.js');
         $this->vhm->get('inlineScript')->appendFile('/js/flipClock/flipclock.js');
         $this->vhm->get('headLink')->appendStylesheet('/css/flipClock/flipclock.css');
+
         $post = false;
         $blogs = $this->blogService->getOnlineBlogsBasedOnStartAndOffSet(0, 4);
 
@@ -135,7 +139,6 @@ class IndexController extends AbstractActionController
         $averageElevation = $this->stravaDbService->getAverageElevation('Run');
         $averageHeartbeat = $this->stravaDbService->getAverageHeartbeat('Run');
 
-
         return new ViewModel(
             array(
                 'tweets' => $tweetsArray,
@@ -148,7 +151,8 @@ class IndexController extends AbstractActionController
                 'totalRunTime' => $totalRunTime,
                 'averageSpeed' => $averageSpeed,
                 'averageElevation' => $averageElevation,
-                'averageHeartbeat' => $averageHeartbeat
+                'averageHeartbeat' => $averageHeartbeat,
+
             )
         );
     }
@@ -257,5 +261,56 @@ class IndexController extends AbstractActionController
             'events' => $events,
             'errorMessage' => $errorMessage
         ));
+    }
+
+    public function runningStatsAction()
+    {
+        $this->vhm->get('headLink')->appendStylesheet('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css');
+        $this->vhm->get('headScript')->appendFile('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js');
+
+        $months = [
+            1 => 'January',
+            2 => 'February',
+            3 => 'March',
+            4 => 'April',
+            5 => 'May',
+            6 => 'June',
+            7 => 'July',
+            8 => 'August',
+            9 => 'September',
+            10 => 'October',
+            11 => 'November',
+            12 => 'December'
+        ];
+
+        $currentMonth = new \DateTime();
+        $currentYear = $currentMonth->format('Y');
+        $currentMonth = $currentMonth->format('m');
+        $years = $this->stravaDbService->getYearsByActivities();
+
+
+        return new ViewModel([
+            'currentMonth' => $currentMonth,
+            'months' => $months,
+            'currentYear' => $currentYear,
+            'years' => $years
+        ]);
+    }
+
+    public function getChartDataAction()
+    {
+
+        $year = (int) $this->params()->fromPost('year', null);
+        $month = (int) $this->params()->fromPost('month', null);
+        $errorMessage = '';
+        $success = true;
+        $dates = $this->stravaDbService->getStartAndEndDateByMonthAndYear($year, $month);
+        $activitiesOfThisMonth = $this->activityRepository->getActivityBetweenDates($dates['startDate'], $dates['endDate']);
+
+        return new JsonModel([
+            'errorMessage' => $errorMessage,
+            'success' => $success,
+            'activitiesOfThisMonth' => $activitiesOfThisMonth
+        ]);
     }
 }

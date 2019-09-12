@@ -516,6 +516,7 @@ header.masthead .post-heading .meta a {
 /* Contact form */
 section#contact div {
     text-align: center;
+    padding-bottom: 15px;
 }
 
 .input-field .form-control {
@@ -571,7 +572,6 @@ h4.twitter-title {
 /* Footer */
 
 footer {
-    margin-top: 15px;
     padding: 15px 0;
     background-color: #FDCB2D;
     box-shadow: 8px 0 8px 0 rgba(0, 0, 0, 0.2), 0 0 20px 0 rgba(0, 0, 0, 0.19);
