@@ -3,6 +3,9 @@
 namespace Application\Controller\Factory;
 
 use StravaApi\Entity\Activity;
+use StravaApi\Entity\ActivityImportLog;
+use StravaApi\Entity\Round;
+use StravaApi\Service\StravaService;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Interop\Container\ContainerInterface;
@@ -15,7 +18,6 @@ use Event\Service\eventService;
 use Event\Service\eventCategoryService;
 use UploadImages\Service\imageService;
 use CheckList\Service\checkListService;
-use StravaApi\Service\StravaDbService;
 
 class IndexControllerFactory implements FactoryInterface {
 
@@ -31,9 +33,11 @@ class IndexControllerFactory implements FactoryInterface {
         $eventCategoryService = new eventCategoryService($entityManager);
         $imageService = new imageService($entityManager, $config);
         $checkListService = new checkListService($entityManager);
-        $stravaDbService = new StravaDbService($entityManager);
 
         $activityRepository = $entityManager->getRepository(Activity::class);
+        $roundRepository = $entityManager->getRepository(Round::class);
+        $activityImportLogRepository = $entityManager->getRepository(ActivityImportLog::class);
+        $stravaService = new StravaService($config, $activityRepository, $roundRepository, $activityImportLogRepository);
         
         return new IndexController(
                 $entityManager, 
@@ -46,8 +50,8 @@ class IndexControllerFactory implements FactoryInterface {
                 $imageService,
                 $checkListService,
                 $eventCategoryService,
-                $stravaDbService,
-                $activityRepository
+                $stravaService,
+                $config
                 );
     }
 

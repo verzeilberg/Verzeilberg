@@ -358,16 +358,6 @@ return [
                     ],
                 ],
             ],
-            'getChartData' => [
-                'type' => Literal::class,
-                'options' => [
-                    'route' => '/getchartdata',
-                    'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action' => 'getChartData',
-                    ],
-                ],
-            ],
             'events' => [
                 'type' => Segment::class,
                 'options' => [
@@ -375,16 +365,6 @@ return [
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
                         'action' => 'events',
-                    ],
-                ],
-            ],
-            'runningStats' => [
-                'type' => Segment::class,
-                'options' => [
-                    'route' => '/running-stats[/:action[/:id]]',
-                    'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action' => 'runningStats',
                     ],
                 ],
             ],
@@ -411,7 +391,7 @@ return [
         'controllers' => [
             Controller\IndexController::class => [
                 // Allow anyone to visit "index" and "about" actions
-                ['actions' => ['index', 'about', 'events', 'event', 'getEventLocations', 'user', 'getLocations', 'runningStats', 'getChartData'], 'allow' => '*'],
+                ['actions' => ['index', 'about', 'events', 'event', 'getEventLocations', 'user', 'getLocations', 'runningStats', 'getChartData', 'detail'], 'allow' => '*'],
             // Allow authorized users to visit "profiel" action
             //['actions' => ['profiel'], 'allow' => '@']
             ],

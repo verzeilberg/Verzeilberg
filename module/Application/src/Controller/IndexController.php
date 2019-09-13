@@ -1,26 +1,15 @@
 <?php
 
-/**
- * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
- * @copyright Copyright (c) 2005-2016 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- */
-
 namespace Application\Controller;
 
+use StravaApi\Service\StravaService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use DoctrineORMModule\Form\Annotation\AnnotationBuilder;
-use Zend\Form\Form;
 use Zend\Captcha;
-use Zend\Form\Element;
-use User\Entity\User;
-use Blog\Entity\Blog;
 use Contact\Entity\Contact;
-use Zend\Session\Container;
-use StravaApi\Service\StravaDbService;
 
 class IndexController extends AbstractActionController
 {
@@ -42,8 +31,12 @@ class IndexController extends AbstractActionController
     protected $imageService;
     protected $checkListService;
     protected $eventCategoryService;
-    protected $stravaDbService;
-    protected $activityRepository;
+    protected $config;
+
+    /*
+     * @var StravaService
+     */
+    protected $stravaService;
 
     public function __construct(
         $entityManager,
@@ -56,8 +49,8 @@ class IndexController extends AbstractActionController
         $imageService,
         $checkListService,
         $eventCategoryService,
-        StravaDbService $stravaDbService,
-        $activityRepository
+        StravaService $stravaService,
+        array $config
     )
     {
         $this->em = $entityManager;
@@ -70,8 +63,8 @@ class IndexController extends AbstractActionController
         $this->imageService = $imageService;
         $this->checkListService = $checkListService;
         $this->eventCategoryService = $eventCategoryService;
-        $this->stravaDbService = $stravaDbService;
-        $this->activityRepository = $activityRepository;
+        $this->stravaService = $stravaService;
+        $this->config = $config;
     }
 
     public function indexAction()
@@ -132,12 +125,12 @@ class IndexController extends AbstractActionController
 
 
         //Running stats
-        $totalRunActivities = $this->stravaDbService->getTotalActivities('Run');
-        $totalRunDistance = $this->stravaDbService->getTotalDistance('Run');
-        $totalRunTime = $this->stravaDbService->getTotalTime('Run');
-        $averageSpeed = $this->stravaDbService->getAverageSpeed('Run');
-        $averageElevation = $this->stravaDbService->getAverageElevation('Run');
-        $averageHeartbeat = $this->stravaDbService->getAverageHeartbeat('Run');
+        $totalRunActivities = $this->stravaService->activityRepository->getTotalActivities('Run');
+        $totalRunDistance = $this->stravaService->activityRepository->getTotalDistance('Run');
+        $totalRunTime = $this->stravaService->activityRepository->getTotalTime('Run');
+        $averageSpeed = $this->stravaService->activityRepository->getAverageSpeed('Run');
+        $averageElevation = $this->stravaService->activityRepository->getAverageElevation('Run');
+        $averageHeartbeat = $this->stravaService->activityRepository->getAverageHeartbeat('Run');
 
         return new ViewModel(
             array(
@@ -261,56 +254,5 @@ class IndexController extends AbstractActionController
             'events' => $events,
             'errorMessage' => $errorMessage
         ));
-    }
-
-    public function runningStatsAction()
-    {
-        $this->vhm->get('headLink')->appendStylesheet('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css');
-        $this->vhm->get('headScript')->appendFile('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js');
-
-        $months = [
-            1 => 'January',
-            2 => 'February',
-            3 => 'March',
-            4 => 'April',
-            5 => 'May',
-            6 => 'June',
-            7 => 'July',
-            8 => 'August',
-            9 => 'September',
-            10 => 'October',
-            11 => 'November',
-            12 => 'December'
-        ];
-
-        $currentMonth = new \DateTime();
-        $currentYear = $currentMonth->format('Y');
-        $currentMonth = $currentMonth->format('m');
-        $years = $this->stravaDbService->getYearsByActivities();
-
-
-        return new ViewModel([
-            'currentMonth' => $currentMonth,
-            'months' => $months,
-            'currentYear' => $currentYear,
-            'years' => $years
-        ]);
-    }
-
-    public function getChartDataAction()
-    {
-
-        $year = (int) $this->params()->fromPost('year', null);
-        $month = (int) $this->params()->fromPost('month', null);
-        $errorMessage = '';
-        $success = true;
-        $dates = $this->stravaDbService->getStartAndEndDateByMonthAndYear($year, $month);
-        $activitiesOfThisMonth = $this->activityRepository->getActivityBetweenDates($dates['startDate'], $dates['endDate']);
-
-        return new JsonModel([
-            'errorMessage' => $errorMessage,
-            'success' => $success,
-            'activitiesOfThisMonth' => $activitiesOfThisMonth
-        ]);
     }
 }
