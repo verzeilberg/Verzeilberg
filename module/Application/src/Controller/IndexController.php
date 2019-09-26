@@ -125,7 +125,7 @@ class IndexController extends AbstractActionController
 
 
         //Running stats
-        $totalRunActivities = $this->stravaService->activityRepository->getTotalActivities('Run');
+        $totalRunActivities = $this->stravaService->activityRepository->getTotalItems('Run');
         $totalRunDistance = $this->stravaService->activityRepository->getTotalDistance('Run');
         $totalRunTime = $this->stravaService->activityRepository->getTotalTime('Run');
         $averageSpeed = $this->stravaService->activityRepository->getAverageSpeed('Run');
