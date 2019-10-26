@@ -76,6 +76,14 @@ class BeheerNavManager
                 ];
             }
 
+            if ($this->rbacManager->isGranted(null, 'agenda.manage')) {
+                $items[] = [
+                    'id' => 'agenda',
+                    'label' => 'Agenda',
+                    'link' => $url('beheer/agenda')
+                ];
+            }
+
             if ($this->rbacManager->isGranted(null, 'strava.manage')) {
                 $items[] = [
                     'id' => 'strava',

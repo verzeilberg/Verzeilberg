@@ -195,10 +195,10 @@ return [
                     'agenda' => [
                         'type' => Segment::class,
                         'options' => [
-                            'route' => '/agenda[/:action[/:id]]',
+                            'route' => '/agenda[/:action[/:day]]',
                             'constraints' => [
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'id' => '[0-9]*',
+                                'day' => '[0-9]*',
                             ],
                             'defaults' => [
                                 'controller' => 'agendabeheer',

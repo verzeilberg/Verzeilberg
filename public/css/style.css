@@ -123,6 +123,10 @@ hr.small {
     text-indent: 20px;
 }
 
+ul.sidebar-nav li ul.dropdown {
+    list-style: none;
+}
+
 .sidebar-nav li a {
     display: block;
     text-decoration: none;

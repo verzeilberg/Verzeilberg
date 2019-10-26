@@ -22,6 +22,10 @@ use CheckList\Service\checkListService;
 class IndexControllerFactory implements FactoryInterface {
 
     public function __invoke(ContainerInterface $container, $requestedName, Array $options = null) {
+
+
+
+
         $entityManager = $container->get('doctrine.entitymanager.orm_default');
         $viewHelperManager = $container->get('ViewHelperManager');
         $config = $container->get('config');
@@ -33,12 +37,11 @@ class IndexControllerFactory implements FactoryInterface {
         $eventCategoryService = new eventCategoryService($entityManager);
         $imageService = new imageService($entityManager, $config);
         $checkListService = new checkListService($entityManager);
-
         $activityRepository = $entityManager->getRepository(Activity::class);
         $roundRepository = $entityManager->getRepository(Round::class);
         $activityImportLogRepository = $entityManager->getRepository(ActivityImportLog::class);
         $stravaService = new StravaService($config, $activityRepository, $roundRepository, $activityImportLogRepository);
-        
+
         return new IndexController(
                 $entityManager, 
                 $viewHelperManager, 
