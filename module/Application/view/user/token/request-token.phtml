@@ -1,0 +1,137 @@
+<?php
+$this->headTitle('Sign in');
+$this->mainMenu()->setActiveItemId('login');
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Sign in' => $this->url('login'),
+]);
+?>
+
+<script>
+    $(document).ready(function () {
+        <?php if ($siteUserConfig['token']['token_general_agreement']) : ?>
+        var $overlay = $('<div id="overlay" class="ui-widget-overlay"><div id="akkoord"><label><input type="checkbox" id="akkoord_checkbox" disabled="disabled" /> Ik heb de voorwaarden hierboven gelezen en ga ermee akkoord</label> <span id="akkoord_scroll_info">(nog niet de gehele voorwaarden zijn gelezen)</span></div></div>').appendTo('body');
+        $('#voorwaarden').prependTo($('#overlay')).toggle(true).focus();
+
+        $(window).resize(function () {
+            setOverlayDimensionsToCurrentDocumentDimensions();
+        });
+
+        $('#akkoord_checkbox').change(function () {
+            $('.ui-widget-overlay').fadeOut();
+            $('input[name=request_token]').focus();
+        });
+
+        scrollMagicFunction();
+
+        <?php endif; ?>
+
+        $("input[name=request_token]").on('click', function (event) {
+            if ($(this).attr('data-go') == 'false') {
+                $(this).attr('data-go', true);
+                $(this).addClass('disabled');
+                $(this).prop('disabled', 'disabled');
+                $("form[name=request_token]").submit();
+            } else {
+                event.preventDefault();
+            }
+        });
+    });
+
+
+    function scrollMagicFunction() {
+        var elem = $("#einde_voorwaarden");
+        var elemTop = elem.offset().top;
+        console.log(elemTop);
+        console.log();
+
+        //this is for short Agreements
+        if ($('#voorwaarden').scrollTop() + $('#voorwaarden').height() > elemTop - 100) {
+            $('#akkoord_checkbox').removeAttr('disabled').focus();
+            $('#akkoord_scroll_info').toggle(false);
+        }
+
+        $('#voorwaarden').scroll(function () {
+            if ($('#voorwaarden').scrollTop() + $('#voorwaarden').height() > elemTop - 100) {
+                $('#akkoord_checkbox').removeAttr('disabled').focus();
+                $('#akkoord_scroll_info').toggle(false);
+            }
+        });
+    }
+
+    function setOverlayDimensionsToCurrentDocumentDimensions() {
+        $('.ui-widget-overlay').width($(document).width());
+        $('.ui-widget-overlay').height($(document).height());
+    }
+</script>
+<div id="voorwaarden" style="display: none;">
+    <?php echo $this->partial('user/partial/algemene_voorwaarden.phtml', array(
+        'baseurl' => '',
+        'licenceAgreementPartialURL' => $siteUserConfig['token']['licence_agreement_partial']
+    )); ?>
+    <hr id="einde_voorwaarden" style="height: 1px;"/>
+</div>
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('img/bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="site-heading">
+                    <h1 class="index-title">
+                        Token activeren
+                        <small><?= $this->escapeHtml($this->currentUser()->getEmail()) ?></small>
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Breadcrumbs -->
+<?= $this->pageBreadcrumbs()->render(); ?>
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        <div class="col text-center">
+            <h3>Token aanvragen</h3>
+
+
+            <?php if ($this->currentUser() == ''): ?>
+                <p style="color: red; text-align: center; margin-bottom: 2em;">
+                    Geen E-mail adres bekend voor deze gebruiker, neem contact op
+                    met <?= $siteUserConfig['mailtoken_no_mail_msg']; ?>
+                </p>
+                <p>
+                    Gebruiker: <strong><?php echo $this->currentUser()->getUsername() ?></strong> (<a
+                            href="<?php echo $this->url('logout'); ?>">uitloggen</a>)<br/>
+                </p>
+            <?php else: ?>
+                <p class="text-center">
+                    Deze applicatie maakt als extra beveiliging gebruik van E-mail tokens.<br/>
+                    Om het browser token op deze PC (opnieuw) te activeren klikt u op 'Verzenden'.<br/>
+                    U ontvangt dan een E-mail met instructies.
+                </p>
+                <div class="container">
+                    <dl class="col text-center">
+                        <dt>Gebruiker:</dt>
+                        <dd><?php echo $this->currentUser()->getFullname(); ?> (<a
+                                    href="<?php echo $this->url('logout'); ?>">uitloggen</a>)
+                        </dd>
+                        <dt>E-mail adres:</dt>
+                        <dd><?php echo $this->currentUser()->getEmail(); ?></dd>
+                        <hr/>
+                        <form name="request_token" method="POST" action="<?php echo $this->url('request-token'); ?>">
+                            <input name="request_token" type="submit" class="btn btn-success" value="Verzenden"
+                                   data-go="false"/>
+                            <input type="hidden" name="send_tokenlink" value="1"/>
+                        </form>
+                    </dl>
+                </div>
+                <div class="container">
+                    <p id="token_sent" class="col text-center alert alert-success" style="display: none;">
+                        Token wordt verstuurd...
+                    </p>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
