@@ -2,7 +2,15 @@
 
 namespace Application\Controller;
 
+use Blog\Service\blogService;
+use CheckList\Service\checkListService;
+use Contact\Service\contactService;
+use Event\Service\eventCategoryService;
+use Event\Service\eventService;
 use StravaApi\Service\StravaService;
+use Twitter\Service\twitterOathService;
+use Twitter\Service\twitterService;
+use UploadImages\Service\imageService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
@@ -41,23 +49,23 @@ class IndexController extends AbstractActionController
     public function __construct(
         $entityManager,
         $viewHelperManager,
-        $twitterOathService,
-        $twitterService,
-        $contactService,
-        $blogService,
-        $eventService,
-        $imageService,
-        $checkListService,
-        $eventCategoryService,
+        twitterOathService $twitterOathService,
+        twitterService $twitterService,
+        contactService $contactService,
+        blogService $blogService,
+        eventService $eventService,
+        imageService $imageService,
+        checkListService $checkListService,
+        eventCategoryService $eventCategoryService,
         StravaService $stravaService,
         array $config
     )
     {
-        $this->em = $entityManager;
-        $this->vhm = $viewHelperManager;
-        $this->tos = $twitterOathService;
-        $this->ts = $twitterService;
-        $this->ms = $contactService;
+        $this->entityManager = $entityManager;
+        $this->viewHelperManager= $viewHelperManager;
+        $this->twitterOathService = $twitterOathService;
+        $this->twitterService = $twitterService;
+        $this->contactService = $contactService;
         $this->blogService = $blogService;
         $this->eventService = $eventService;
         $this->imageService = $imageService;
@@ -69,27 +77,28 @@ class IndexController extends AbstractActionController
 
     public function indexAction()
     {
-        $this->vhm->get('inlineScript')->appendFile('/js/custom/index.js');
-        $this->vhm->get('inlineScript')->appendFile('/js/flipClock/flipclock.js');
-        $this->vhm->get('headLink')->appendStylesheet('/css/flipClock/flipclock.css');
+        $this->viewHelperManager->get('inlineScript')->appendFile('/js/custom/index.js');
+        $this->viewHelperManager->get('inlineScript')->appendFile('/js/flipClock/flipclock.js');
+        $this->viewHelperManager->get('headLink')->appendStylesheet('/css/flipClock/flipclock.css');
 
         $post = false;
         $blogs = $this->blogService->getOnlineBlogsBasedOnStartAndOffSet(0, 4);
 
-        $tweets = $this->tos->getTwitterUserTimeline(1, 4);
+        $tweets = $this->twitterOathService->getTwitterUserTimeline(1, 4);
 
         $tweetsArray = array();
+
         foreach ($tweets AS $index => $tweet) {
-            $tweetsArray[$index]['tweet_text'] = $this->ts->twitterFy($tweet->text);
+            $tweetsArray[$index]['tweet_text'] = $this->twitterService->twitterFy($tweet->text);
             $date = new \DateTime($tweet->created_at);
             $timeStamp = $date->getTimestamp();
-            $tweetsArray[$index]['tweet_date'] = $this->ts->ShowDate($timeStamp);
+            $tweetsArray[$index]['tweet_date'] = $this->twitterService->ShowDate($timeStamp);
         }
 
         $contact = new Contact();
-        $builder = new AnnotationBuilder($this->em);
+        $builder = new AnnotationBuilder($this->entityManager);
         $form = $builder->createForm($contact);
-        $form->setHydrator(new DoctrineHydrator($this->em, 'Contact\Entity\Contact'));
+        $form->setHydrator(new DoctrineHydrator($this->entityManager, 'Contact\Entity\Contact'));
         $form->bind($contact);
         $form->setAttributes(['action' => '/#contact']);
 
@@ -111,10 +120,10 @@ class IndexController extends AbstractActionController
             $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
                 $contact->setDateCreated(new \DateTime());
-                $this->em->persist($contact);
-                $this->em->flush();
+                $this->entityManager->persist($contact);
+                $this->entityManager->flush();
 
-                $this->ms->sendMail($contact);
+                $this->contactService->sendMail($contact);
                 return $this->redirect()->toRoute('home', array(), array('fragment' => 'contact', 'query' => array('send' => 'true')));
             }
         }
@@ -166,10 +175,10 @@ class IndexController extends AbstractActionController
      */
     public function eventsAction()
     {
-        $this->vhm->get('headScript')->appendFile('/js/eventsFrontEnd.js');
-        $this->vhm->get('headScript')->appendFile('/js/lodash.js');
-        $this->vhm->get('headScript')->appendFile('/js/moment.js');
-        $this->vhm->get('headLink')->appendStylesheet('/css/events.css');
+        $this->viewHelperManager->get('headScript')->appendFile('/js/eventsFrontEnd.js');
+        $this->viewHelperManager->get('headScript')->appendFile('/js/lodash.js');
+        $this->viewHelperManager->get('headScript')->appendFile('/js/moment.js');
+        $this->viewHelperManager->get('headLink')->appendStylesheet('/css/events.css');
         $currentYear = new \DateTime();
         $year = $currentYear->format('Y');
         $categoryId = 'all';

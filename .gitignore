@@ -1,8 +1,9 @@
 .vagrant/
 vendor/
 config/development.config.php
-data/cache/*
+data/DoctrineORMModule/Proxy/
 !data/cache/.gitkeep
 phpunit.xml
 .idea
 config/autoload/local.php
+public/img/userFiles/

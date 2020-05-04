@@ -17,10 +17,13 @@ if (php_sapi_name() === 'cli-server') {
     unset($path);
 }
 
-
-//Error display
-    error_reporting(1);
+//Check for application en vironment
+if ( strtolower(getenv('APPLICATION_ENV')) === 'development')
+{
+    //Error display
+    error_reporting(E_ALL);
     ini_set("display_errors", 1);
+}
 
 // Composer autoloading
 include __DIR__ . '/../vendor/autoload.php';

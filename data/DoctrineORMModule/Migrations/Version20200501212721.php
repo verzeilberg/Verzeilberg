@@ -1,0 +1,286 @@
+<?php
+
+namespace DoctrineORMModule\Migrations;
+
+use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\DBAL\Schema\Schema;
+
+/**
+ * Auto-generated Migration: Please modify to your needs!
+ */
+class Version20200501212721 extends AbstractMigration
+{
+    /**
+     * @param Schema $schema
+     */
+    public function up(Schema $schema)
+    {
+        // this up() migration is auto-generated, please modify it to your needs
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+
+        $this->addSql('CREATE TABLE user (id INT AUTO_INCREMENT NOT NULL, email VARCHAR(255) NOT NULL, full_name VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, status INT NOT NULL, date_created DATETIME NOT NULL, pwd_reset_token VARCHAR(255) DEFAULT NULL, pwd_reset_token_creation_date DATETIME DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE user_role (user_id INT NOT NULL, role_id INT NOT NULL, INDEX IDX_2DE8C6A3A76ED395 (user_id), INDEX IDX_2DE8C6A3D60322AC (role_id), PRIMARY KEY(user_id, role_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE token (userId INT NOT NULL, username VARCHAR(255) NOT NULL, IP VARCHAR(15) NOT NULL, sessionID VARCHAR(40) NOT NULL, timestamp INT NOT NULL, token VARCHAR(35) NOT NULL, PRIMARY KEY(userId)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE role (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, description LONGTEXT DEFAULT NULL, date_created DATETIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE role_hierarchy (parent_role_id INT NOT NULL, child_role_id INT NOT NULL, INDEX IDX_AB8EFB72A44B56EA (parent_role_id), INDEX IDX_AB8EFB72B4B76AB7 (child_role_id), PRIMARY KEY(parent_role_id, child_role_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE role_permission (role_id INT NOT NULL, permission_id INT NOT NULL, INDEX IDX_6F7DF886D60322AC (role_id), INDEX IDX_6F7DF886FED90CCA (permission_id), PRIMARY KEY(role_id, permission_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE permission (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, description LONGTEXT DEFAULT NULL, date_created DATETIME DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE comments (id INT AUTO_INCREMENT NOT NULL, blog_id INT DEFAULT NULL, parent_id INT DEFAULT NULL, created_by INT DEFAULT NULL, changed_by INT DEFAULT NULL, deleted_by INT DEFAULT NULL, comment LONGTEXT DEFAULT NULL, date_created DATETIME NOT NULL, date_changed DATETIME DEFAULT NULL, date_deleted DATETIME DEFAULT NULL, deleted INT DEFAULT NULL, INDEX IDX_5F9E962ADAE07E97 (blog_id), INDEX IDX_5F9E962A727ACA70 (parent_id), INDEX IDX_5F9E962ADE12AB56 (created_by), INDEX IDX_5F9E962A10BC6D9F (changed_by), INDEX IDX_5F9E962A1F6FA0AF (deleted_by), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE categories (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, description TINYTEXT DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE blog (id INT AUTO_INCREMENT NOT NULL, created_by INT DEFAULT NULL, changed_by INT DEFAULT NULL, deleted_by INT DEFAULT NULL, online INT DEFAULT 0 NOT NULL, twittered INT DEFAULT 0, tweet_id VARCHAR(255) DEFAULT NULL, date_online DATETIME DEFAULT NULL, date_offline DATETIME DEFAULT NULL, title VARCHAR(255) NOT NULL, introtext VARCHAR(2500) NOT NULL, text LONGTEXT NOT NULL, date_created DATETIME NOT NULL, date_changed DATETIME DEFAULT NULL, date_deleted DATETIME DEFAULT NULL, deleted INT DEFAULT NULL, INDEX IDX_C0155143DE12AB56 (created_by), INDEX IDX_C015514310BC6D9F (changed_by), INDEX IDX_C01551431F6FA0AF (deleted_by), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE blog_category (blog_id INT NOT NULL, category_id INT NOT NULL, INDEX IDX_72113DE6DAE07E97 (blog_id), INDEX IDX_72113DE612469DE2 (category_id), PRIMARY KEY(blog_id, category_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE blog_images (blogId INT NOT NULL, imageId INT NOT NULL, INDEX IDX_75501BABED85FE43 (blogId), UNIQUE INDEX UNIQ_75501BAB10F3034D (imageId), PRIMARY KEY(blogId, imageId)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE blog_youtubes (blogId INT NOT NULL, youTubeId INT NOT NULL, INDEX IDX_4E176700ED85FE43 (blogId), UNIQUE INDEX UNIQ_4E1767001FE86EAB (youTubeId), PRIMARY KEY(blogId, youTubeId)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE blogimagetypes (id INT AUTO_INCREMENT NOT NULL, fileName VARCHAR(255) NOT NULL, folder VARCHAR(255) NOT NULL, imageTypeName VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE blogimages (id INT AUTO_INCREMENT NOT NULL, name_image VARCHAR(255) DEFAULT NULL, alt VARCHAR(255) DEFAULT NULL, description_image VARCHAR(255) DEFAULT NULL, sort_order INT DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE blogimage_blogimagetypes (blogId INT NOT NULL, imageTypeId INT NOT NULL, INDEX IDX_B731A4C8ED85FE43 (blogId), UNIQUE INDEX UNIQ_B731A4C8125F993 (imageTypeId), PRIMARY KEY(blogId, imageTypeId)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE agenda_item (id INT AUTO_INCREMENT NOT NULL, created_by INT DEFAULT NULL, changed_by INT DEFAULT NULL, deleted_by INT DEFAULT NULL, name VARCHAR(255) NOT NULL, description VARCHAR(255) DEFAULT NULL, start_date DATE NOT NULL, end_date DATE NOT NULL, start_time TIME DEFAULT NULL, end_time TIME NOT NULL, whole_day INT DEFAULT NULL, date_created DATETIME NOT NULL, date_changed DATETIME DEFAULT NULL, date_deleted DATETIME DEFAULT NULL, deleted INT DEFAULT NULL, INDEX IDX_223E876EDE12AB56 (created_by), INDEX IDX_223E876E10BC6D9F (changed_by), INDEX IDX_223E876E1F6FA0AF (deleted_by), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE agenda (id INT AUTO_INCREMENT NOT NULL, created_by INT DEFAULT NULL, changed_by INT DEFAULT NULL, deleted_by INT DEFAULT NULL, name VARCHAR(255) NOT NULL, whole_day INT DEFAULT NULL, date_created DATETIME NOT NULL, date_changed DATETIME DEFAULT NULL, date_deleted DATETIME DEFAULT NULL, deleted INT DEFAULT NULL, INDEX IDX_2CEDC877DE12AB56 (created_by), INDEX IDX_2CEDC87710BC6D9F (changed_by), INDEX IDX_2CEDC8771F6FA0AF (deleted_by), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE agendas_users (agenda_id INT NOT NULL, user_id INT NOT NULL, INDEX IDX_81419C8AEA67784A (agenda_id), INDEX IDX_81419C8AA76ED395 (user_id), PRIMARY KEY(agenda_id, user_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE file (id INT AUTO_INCREMENT NOT NULL, created_by INT DEFAULT NULL, changed_by INT DEFAULT NULL, deleted_by INT DEFAULT NULL, name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, subject INT NOT NULL, path VARCHAR(255) NOT NULL, description LONGTEXT DEFAULT NULL, date_created DATETIME NOT NULL, date_changed DATETIME DEFAULT NULL, date_deleted DATETIME DEFAULT NULL, deleted INT DEFAULT NULL, INDEX IDX_8C9F3610DE12AB56 (created_by), INDEX IDX_8C9F361010BC6D9F (changed_by), INDEX IDX_8C9F36101F6FA0AF (deleted_by), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE images (id INT AUTO_INCREMENT NOT NULL, name_image VARCHAR(255) DEFAULT NULL, alt VARCHAR(255) DEFAULT NULL, description_image VARCHAR(255) DEFAULT NULL, sort_order INT DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE image_imagetypes (imageId INT NOT NULL, imageTypeId INT NOT NULL, INDEX IDX_9AF1048310F3034D (imageId), UNIQUE INDEX UNIQ_9AF10483125F993 (imageTypeId), PRIMARY KEY(imageId, imageTypeId)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE imagetypes (id INT AUTO_INCREMENT NOT NULL, fileName VARCHAR(255) NOT NULL, folder VARCHAR(255) NOT NULL, width INT DEFAULT NULL, height INT DEFAULT NULL, imageTypeName VARCHAR(255) NOT NULL, is_crop INT DEFAULT 0 NOT NULL, is_original INT DEFAULT 0 NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE youtubeimages (id INT AUTO_INCREMENT NOT NULL, youtube_id INT DEFAULT NULL, type VARCHAR(255) DEFAULT NULL, url VARCHAR(255) DEFAULT NULL, width INT DEFAULT NULL, height INT DEFAULT NULL, INDEX IDX_B8AD4513BB7E40D1 (youtube_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE youtubevideos (id INT AUTO_INCREMENT NOT NULL, you_tube_id VARCHAR(255) DEFAULT NULL, title VARCHAR(255) DEFAULT NULL, description LONGTEXT DEFAULT NULL, duration VARCHAR(255) DEFAULT NULL, controls INT DEFAULT 0, auto_play INT DEFAULT 0, related_videos INT DEFAULT 0, show_info INT DEFAULT 0, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE contact (id INT AUTO_INCREMENT NOT NULL, created_by INT DEFAULT NULL, changed_by INT DEFAULT NULL, deleted_by INT DEFAULT NULL, salutation INT DEFAULT NULL, name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, subject VARCHAR(255) NOT NULL, message LONGTEXT NOT NULL, date_created DATETIME NOT NULL, date_changed DATETIME DEFAULT NULL, date_deleted DATETIME DEFAULT NULL, deleted INT DEFAULT NULL, INDEX IDX_4C62E638DE12AB56 (created_by), INDEX IDX_4C62E63810BC6D9F (changed_by), INDEX IDX_4C62E6381F6FA0AF (deleted_by), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE searchphrases (id INT AUTO_INCREMENT NOT NULL, search_phrase VARCHAR(255) NOT NULL, count INT NOT NULL, date_searched DATETIME NOT NULL, type VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE events (id INT AUTO_INCREMENT NOT NULL, category_id INT DEFAULT NULL, created_by INT DEFAULT NULL, changed_by INT DEFAULT NULL, deleted_by INT DEFAULT NULL, event_start_date DATETIME NOT NULL, event_end_date DATETIME NOT NULL, title VARCHAR(255) NOT NULL, longitude TINYTEXT DEFAULT NULL, latitude TINYTEXT DEFAULT NULL, label_text LONGTEXT DEFAULT NULL, text LONGTEXT DEFAULT NULL, date_created DATETIME NOT NULL, date_changed DATETIME DEFAULT NULL, date_deleted DATETIME DEFAULT NULL, deleted INT DEFAULT NULL, imageId INT DEFAULT NULL, INDEX IDX_5387574A10F3034D (imageId), INDEX IDX_5387574A12469DE2 (category_id), INDEX IDX_5387574ADE12AB56 (created_by), INDEX IDX_5387574A10BC6D9F (changed_by), INDEX IDX_5387574A1F6FA0AF (deleted_by), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE event_categories (id INT AUTO_INCREMENT NOT NULL, file_id INT DEFAULT NULL, created_by INT DEFAULT NULL, changed_by INT DEFAULT NULL, deleted_by INT DEFAULT NULL, name VARCHAR(255) NOT NULL, description TINYTEXT DEFAULT NULL, date_created DATETIME NOT NULL, date_changed DATETIME DEFAULT NULL, date_deleted DATETIME DEFAULT NULL, deleted INT DEFAULT NULL, UNIQUE INDEX UNIQ_621D9F4793CB796C (file_id), INDEX IDX_621D9F47DE12AB56 (created_by), INDEX IDX_621D9F4710BC6D9F (changed_by), INDEX IDX_621D9F471F6FA0AF (deleted_by), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE checklistfields (id INT AUTO_INCREMENT NOT NULL, check_list_id INT DEFAULT NULL, check_list_field_type_id INT DEFAULT NULL, parent_id INT DEFAULT NULL, created_by INT DEFAULT NULL, changed_by INT DEFAULT NULL, deleted_by INT DEFAULT NULL, sort_order INT DEFAULT NULL, show_in_overview INT NOT NULL, name VARCHAR(255) NOT NULL, intro_text LONGTEXT DEFAULT NULL, form_field_name VARCHAR(255) NOT NULL, required INT DEFAULT NULL, options VARCHAR(2555) DEFAULT NULL, required_message VARCHAR(255) DEFAULT NULL, date_created DATETIME NOT NULL, date_changed DATETIME DEFAULT NULL, date_deleted DATETIME DEFAULT NULL, deleted INT DEFAULT NULL, INDEX IDX_CA3588CA7BB2580B (check_list_id), INDEX IDX_CA3588CAF3E3FDB9 (check_list_field_type_id), INDEX IDX_CA3588CA727ACA70 (parent_id), INDEX IDX_CA3588CADE12AB56 (created_by), INDEX IDX_CA3588CA10BC6D9F (changed_by), INDEX IDX_CA3588CA1F6FA0AF (deleted_by), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE checklistfield_answer (checklistfield_id INT NOT NULL, answer_id INT NOT NULL, INDEX IDX_B8E8C4495C182637 (checklistfield_id), INDEX IDX_B8E8C449AA334807 (answer_id), PRIMARY KEY(checklistfield_id, answer_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE checklists (id INT AUTO_INCREMENT NOT NULL, created_by INT DEFAULT NULL, changed_by INT DEFAULT NULL, deleted_by INT DEFAULT NULL, name VARCHAR(255) NOT NULL, public INT NOT NULL, autocomplete INT NOT NULL, date_created DATETIME NOT NULL, date_changed DATETIME DEFAULT NULL, date_deleted DATETIME DEFAULT NULL, deleted INT DEFAULT NULL, INDEX IDX_B0839B3FDE12AB56 (created_by), INDEX IDX_B0839B3F10BC6D9F (changed_by), INDEX IDX_B0839B3F1F6FA0AF (deleted_by), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE answer (id INT AUTO_INCREMENT NOT NULL, created_by INT DEFAULT NULL, changed_by INT DEFAULT NULL, deleted_by INT DEFAULT NULL, `label` VARCHAR(255) NOT NULL, value VARCHAR(255) NOT NULL, date_created DATETIME NOT NULL, date_changed DATETIME DEFAULT NULL, date_deleted DATETIME DEFAULT NULL, deleted INT DEFAULT NULL, INDEX IDX_DADD4A25DE12AB56 (created_by), INDEX IDX_DADD4A2510BC6D9F (changed_by), INDEX IDX_DADD4A251F6FA0AF (deleted_by), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE checklistfieldtypes (id INT AUTO_INCREMENT NOT NULL, created_by INT DEFAULT NULL, changed_by INT DEFAULT NULL, deleted_by INT DEFAULT NULL, name VARCHAR(255) NOT NULL, form_type VARCHAR(255) NOT NULL, date_created DATETIME NOT NULL, date_changed DATETIME DEFAULT NULL, date_deleted DATETIME DEFAULT NULL, deleted INT DEFAULT NULL, INDEX IDX_2F72966CDE12AB56 (created_by), INDEX IDX_2F72966C10BC6D9F (changed_by), INDEX IDX_2F72966C1F6FA0AF (deleted_by), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE checklistitems (id INT AUTO_INCREMENT NOT NULL, check_list_id INT DEFAULT NULL, created_by INT DEFAULT NULL, changed_by INT DEFAULT NULL, deleted_by INT DEFAULT NULL, item_content LONGTEXT DEFAULT NULL, date_created DATETIME NOT NULL, date_changed DATETIME DEFAULT NULL, date_deleted DATETIME DEFAULT NULL, deleted INT DEFAULT NULL, INDEX IDX_3ACB9CB17BB2580B (check_list_id), INDEX IDX_3ACB9CB1DE12AB56 (created_by), INDEX IDX_3ACB9CB110BC6D9F (changed_by), INDEX IDX_3ACB9CB11F6FA0AF (deleted_by), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE answer_given (id INT AUTO_INCREMENT NOT NULL, checklist_id INT DEFAULT NULL, checklist_item_id INT DEFAULT NULL, checklist_field_id INT DEFAULT NULL, answer_id INT DEFAULT NULL, created_by INT DEFAULT NULL, changed_by INT DEFAULT NULL, deleted_by INT DEFAULT NULL, answer LONGTEXT DEFAULT NULL, date_created DATETIME NOT NULL, date_changed DATETIME DEFAULT NULL, date_deleted DATETIME DEFAULT NULL, deleted INT DEFAULT NULL, INDEX IDX_D2D8CAC5B16D08A7 (checklist_id), INDEX IDX_D2D8CAC57E0892A4 (checklist_item_id), INDEX IDX_D2D8CAC519337B72 (checklist_field_id), INDEX IDX_D2D8CAC5AA334807 (answer_id), INDEX IDX_D2D8CAC5DE12AB56 (created_by), INDEX IDX_D2D8CAC510BC6D9F (changed_by), INDEX IDX_D2D8CAC51F6FA0AF (deleted_by), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE access_token (id INT AUTO_INCREMENT NOT NULL, expires_at DATE NOT NULL, expires_in TIME NOT NULL, refresh_token VARCHAR(255) NOT NULL, access_token VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE rounds (id INT AUTO_INCREMENT NOT NULL, activity_id INT NOT NULL, created_by INT DEFAULT NULL, changed_by INT DEFAULT NULL, deleted_by INT DEFAULT NULL, distance DOUBLE PRECISION NOT NULL, elapsed_time INT NOT NULL, elevation_difference DOUBLE PRECISION NOT NULL, moving_time INT NOT NULL, split INT DEFAULT NULL, average_speed DOUBLE PRECISION DEFAULT NULL, average_heartrate DOUBLE PRECISION DEFAULT NULL, pace_zone INT DEFAULT NULL, date_created DATETIME NOT NULL, date_changed DATETIME DEFAULT NULL, date_deleted DATETIME DEFAULT NULL, deleted INT DEFAULT NULL, INDEX IDX_3A7FD55481C06096 (activity_id), INDEX IDX_3A7FD554DE12AB56 (created_by), INDEX IDX_3A7FD55410BC6D9F (changed_by), INDEX IDX_3A7FD5541F6FA0AF (deleted_by), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE activity_import_log (id INT AUTO_INCREMENT NOT NULL, created_by INT DEFAULT NULL, changed_by INT DEFAULT NULL, deleted_by INT DEFAULT NULL, import_date DATETIME NOT NULL, date_created DATETIME NOT NULL, date_changed DATETIME DEFAULT NULL, date_deleted DATETIME DEFAULT NULL, deleted INT DEFAULT NULL, INDEX IDX_4EB0F64DDE12AB56 (created_by), INDEX IDX_4EB0F64D10BC6D9F (changed_by), INDEX IDX_4EB0F64D1F6FA0AF (deleted_by), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE activities (id INT AUTO_INCREMENT NOT NULL, import_log_id INT DEFAULT NULL, created_by INT DEFAULT NULL, changed_by INT DEFAULT NULL, deleted_by INT DEFAULT NULL, activity_id VARCHAR(265) NOT NULL, athlete_id INT NOT NULL, title VARCHAR(255) NOT NULL, distance DOUBLE PRECISION NOT NULL, moving_time INT NOT NULL, elapsed_time INT NOT NULL, total_elevation_gain DOUBLE PRECISION NOT NULL, type VARCHAR(255) NOT NULL, workout_type INT DEFAULT NULL, start_date DATETIME NOT NULL, start_date_local DATETIME NOT NULL, timezone VARCHAR(255) NOT NULL, start_lat DOUBLE PRECISION DEFAULT NULL, start_lng DOUBLE PRECISION DEFAULT NULL, end_lat DOUBLE PRECISION DEFAULT NULL, end_lng DOUBLE PRECISION DEFAULT NULL, summary_polyline LONGTEXT DEFAULT NULL, average_speed DOUBLE PRECISION DEFAULT NULL, average_speed_time TIME DEFAULT NULL, max_speed DOUBLE PRECISION DEFAULT NULL, average_heartrate DOUBLE PRECISION DEFAULT NULL, max_heartrate DOUBLE PRECISION DEFAULT NULL, elev_high DOUBLE PRECISION DEFAULT NULL, elev_low DOUBLE PRECISION DEFAULT NULL, description LONGTEXT DEFAULT NULL, date_created DATETIME NOT NULL, date_changed DATETIME DEFAULT NULL, date_deleted DATETIME DEFAULT NULL, deleted INT DEFAULT NULL, INDEX IDX_B5F1AFE59656E79E (import_log_id), INDEX IDX_B5F1AFE5DE12AB56 (created_by), INDEX IDX_B5F1AFE510BC6D9F (changed_by), INDEX IDX_B5F1AFE51F6FA0AF (deleted_by), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE user_role ADD CONSTRAINT FK_2DE8C6A3A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE user_role ADD CONSTRAINT FK_2DE8C6A3D60322AC FOREIGN KEY (role_id) REFERENCES role (id)');
+        $this->addSql('ALTER TABLE role_hierarchy ADD CONSTRAINT FK_AB8EFB72A44B56EA FOREIGN KEY (parent_role_id) REFERENCES role (id)');
+        $this->addSql('ALTER TABLE role_hierarchy ADD CONSTRAINT FK_AB8EFB72B4B76AB7 FOREIGN KEY (child_role_id) REFERENCES role (id)');
+        $this->addSql('ALTER TABLE role_permission ADD CONSTRAINT FK_6F7DF886D60322AC FOREIGN KEY (role_id) REFERENCES role (id)');
+        $this->addSql('ALTER TABLE role_permission ADD CONSTRAINT FK_6F7DF886FED90CCA FOREIGN KEY (permission_id) REFERENCES permission (id)');
+        $this->addSql('ALTER TABLE comments ADD CONSTRAINT FK_5F9E962ADAE07E97 FOREIGN KEY (blog_id) REFERENCES blog (id)');
+        $this->addSql('ALTER TABLE comments ADD CONSTRAINT FK_5F9E962A727ACA70 FOREIGN KEY (parent_id) REFERENCES comments (id)');
+        $this->addSql('ALTER TABLE comments ADD CONSTRAINT FK_5F9E962ADE12AB56 FOREIGN KEY (created_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE comments ADD CONSTRAINT FK_5F9E962A10BC6D9F FOREIGN KEY (changed_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE comments ADD CONSTRAINT FK_5F9E962A1F6FA0AF FOREIGN KEY (deleted_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE blog ADD CONSTRAINT FK_C0155143DE12AB56 FOREIGN KEY (created_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE blog ADD CONSTRAINT FK_C015514310BC6D9F FOREIGN KEY (changed_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE blog ADD CONSTRAINT FK_C01551431F6FA0AF FOREIGN KEY (deleted_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE blog_category ADD CONSTRAINT FK_72113DE6DAE07E97 FOREIGN KEY (blog_id) REFERENCES blog (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE blog_category ADD CONSTRAINT FK_72113DE612469DE2 FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE blog_images ADD CONSTRAINT FK_75501BABED85FE43 FOREIGN KEY (blogId) REFERENCES blog (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE blog_images ADD CONSTRAINT FK_75501BAB10F3034D FOREIGN KEY (imageId) REFERENCES images (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE blog_youtubes ADD CONSTRAINT FK_4E176700ED85FE43 FOREIGN KEY (blogId) REFERENCES blog (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE blog_youtubes ADD CONSTRAINT FK_4E1767001FE86EAB FOREIGN KEY (youTubeId) REFERENCES youtubevideos (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE blogimage_blogimagetypes ADD CONSTRAINT FK_B731A4C8ED85FE43 FOREIGN KEY (blogId) REFERENCES blogimages (id)');
+        $this->addSql('ALTER TABLE blogimage_blogimagetypes ADD CONSTRAINT FK_B731A4C8125F993 FOREIGN KEY (imageTypeId) REFERENCES blogimagetypes (id)');
+        $this->addSql('ALTER TABLE agenda_item ADD CONSTRAINT FK_223E876EDE12AB56 FOREIGN KEY (created_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE agenda_item ADD CONSTRAINT FK_223E876E10BC6D9F FOREIGN KEY (changed_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE agenda_item ADD CONSTRAINT FK_223E876E1F6FA0AF FOREIGN KEY (deleted_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE agenda ADD CONSTRAINT FK_2CEDC877DE12AB56 FOREIGN KEY (created_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE agenda ADD CONSTRAINT FK_2CEDC87710BC6D9F FOREIGN KEY (changed_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE agenda ADD CONSTRAINT FK_2CEDC8771F6FA0AF FOREIGN KEY (deleted_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE agendas_users ADD CONSTRAINT FK_81419C8AEA67784A FOREIGN KEY (agenda_id) REFERENCES agenda (id)');
+        $this->addSql('ALTER TABLE agendas_users ADD CONSTRAINT FK_81419C8AA76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE file ADD CONSTRAINT FK_8C9F3610DE12AB56 FOREIGN KEY (created_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE file ADD CONSTRAINT FK_8C9F361010BC6D9F FOREIGN KEY (changed_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE file ADD CONSTRAINT FK_8C9F36101F6FA0AF FOREIGN KEY (deleted_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE image_imagetypes ADD CONSTRAINT FK_9AF1048310F3034D FOREIGN KEY (imageId) REFERENCES images (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE image_imagetypes ADD CONSTRAINT FK_9AF10483125F993 FOREIGN KEY (imageTypeId) REFERENCES imagetypes (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE youtubeimages ADD CONSTRAINT FK_B8AD4513BB7E40D1 FOREIGN KEY (youtube_id) REFERENCES youtubevideos (id)');
+        $this->addSql('ALTER TABLE contact ADD CONSTRAINT FK_4C62E638DE12AB56 FOREIGN KEY (created_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE contact ADD CONSTRAINT FK_4C62E63810BC6D9F FOREIGN KEY (changed_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE contact ADD CONSTRAINT FK_4C62E6381F6FA0AF FOREIGN KEY (deleted_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE events ADD CONSTRAINT FK_5387574A10F3034D FOREIGN KEY (imageId) REFERENCES images (id) ON DELETE SET NULL');
+        $this->addSql('ALTER TABLE events ADD CONSTRAINT FK_5387574A12469DE2 FOREIGN KEY (category_id) REFERENCES event_categories (id)');
+        $this->addSql('ALTER TABLE events ADD CONSTRAINT FK_5387574ADE12AB56 FOREIGN KEY (created_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE events ADD CONSTRAINT FK_5387574A10BC6D9F FOREIGN KEY (changed_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE events ADD CONSTRAINT FK_5387574A1F6FA0AF FOREIGN KEY (deleted_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE event_categories ADD CONSTRAINT FK_621D9F4793CB796C FOREIGN KEY (file_id) REFERENCES file (id)');
+        $this->addSql('ALTER TABLE event_categories ADD CONSTRAINT FK_621D9F47DE12AB56 FOREIGN KEY (created_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE event_categories ADD CONSTRAINT FK_621D9F4710BC6D9F FOREIGN KEY (changed_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE event_categories ADD CONSTRAINT FK_621D9F471F6FA0AF FOREIGN KEY (deleted_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE checklistfields ADD CONSTRAINT FK_CA3588CA7BB2580B FOREIGN KEY (check_list_id) REFERENCES checklists (id)');
+        $this->addSql('ALTER TABLE checklistfields ADD CONSTRAINT FK_CA3588CAF3E3FDB9 FOREIGN KEY (check_list_field_type_id) REFERENCES checklistfieldtypes (id)');
+        $this->addSql('ALTER TABLE checklistfields ADD CONSTRAINT FK_CA3588CA727ACA70 FOREIGN KEY (parent_id) REFERENCES checklistfields (id)');
+        $this->addSql('ALTER TABLE checklistfields ADD CONSTRAINT FK_CA3588CADE12AB56 FOREIGN KEY (created_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE checklistfields ADD CONSTRAINT FK_CA3588CA10BC6D9F FOREIGN KEY (changed_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE checklistfields ADD CONSTRAINT FK_CA3588CA1F6FA0AF FOREIGN KEY (deleted_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE checklistfield_answer ADD CONSTRAINT FK_B8E8C4495C182637 FOREIGN KEY (checklistfield_id) REFERENCES checklistfields (id)');
+        $this->addSql('ALTER TABLE checklistfield_answer ADD CONSTRAINT FK_B8E8C449AA334807 FOREIGN KEY (answer_id) REFERENCES answer (id)');
+        $this->addSql('ALTER TABLE checklists ADD CONSTRAINT FK_B0839B3FDE12AB56 FOREIGN KEY (created_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE checklists ADD CONSTRAINT FK_B0839B3F10BC6D9F FOREIGN KEY (changed_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE checklists ADD CONSTRAINT FK_B0839B3F1F6FA0AF FOREIGN KEY (deleted_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE answer ADD CONSTRAINT FK_DADD4A25DE12AB56 FOREIGN KEY (created_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE answer ADD CONSTRAINT FK_DADD4A2510BC6D9F FOREIGN KEY (changed_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE answer ADD CONSTRAINT FK_DADD4A251F6FA0AF FOREIGN KEY (deleted_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE checklistfieldtypes ADD CONSTRAINT FK_2F72966CDE12AB56 FOREIGN KEY (created_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE checklistfieldtypes ADD CONSTRAINT FK_2F72966C10BC6D9F FOREIGN KEY (changed_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE checklistfieldtypes ADD CONSTRAINT FK_2F72966C1F6FA0AF FOREIGN KEY (deleted_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE checklistitems ADD CONSTRAINT FK_3ACB9CB17BB2580B FOREIGN KEY (check_list_id) REFERENCES checklists (id)');
+        $this->addSql('ALTER TABLE checklistitems ADD CONSTRAINT FK_3ACB9CB1DE12AB56 FOREIGN KEY (created_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE checklistitems ADD CONSTRAINT FK_3ACB9CB110BC6D9F FOREIGN KEY (changed_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE checklistitems ADD CONSTRAINT FK_3ACB9CB11F6FA0AF FOREIGN KEY (deleted_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE answer_given ADD CONSTRAINT FK_D2D8CAC5B16D08A7 FOREIGN KEY (checklist_id) REFERENCES checklists (id)');
+        $this->addSql('ALTER TABLE answer_given ADD CONSTRAINT FK_D2D8CAC57E0892A4 FOREIGN KEY (checklist_item_id) REFERENCES checklistitems (id)');
+        $this->addSql('ALTER TABLE answer_given ADD CONSTRAINT FK_D2D8CAC519337B72 FOREIGN KEY (checklist_field_id) REFERENCES checklistfields (id)');
+        $this->addSql('ALTER TABLE answer_given ADD CONSTRAINT FK_D2D8CAC5AA334807 FOREIGN KEY (answer_id) REFERENCES answer (id)');
+        $this->addSql('ALTER TABLE answer_given ADD CONSTRAINT FK_D2D8CAC5DE12AB56 FOREIGN KEY (created_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE answer_given ADD CONSTRAINT FK_D2D8CAC510BC6D9F FOREIGN KEY (changed_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE answer_given ADD CONSTRAINT FK_D2D8CAC51F6FA0AF FOREIGN KEY (deleted_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE rounds ADD CONSTRAINT FK_3A7FD55481C06096 FOREIGN KEY (activity_id) REFERENCES activities (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE rounds ADD CONSTRAINT FK_3A7FD554DE12AB56 FOREIGN KEY (created_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE rounds ADD CONSTRAINT FK_3A7FD55410BC6D9F FOREIGN KEY (changed_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE rounds ADD CONSTRAINT FK_3A7FD5541F6FA0AF FOREIGN KEY (deleted_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE activity_import_log ADD CONSTRAINT FK_4EB0F64DDE12AB56 FOREIGN KEY (created_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE activity_import_log ADD CONSTRAINT FK_4EB0F64D10BC6D9F FOREIGN KEY (changed_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE activity_import_log ADD CONSTRAINT FK_4EB0F64D1F6FA0AF FOREIGN KEY (deleted_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE activities ADD CONSTRAINT FK_B5F1AFE59656E79E FOREIGN KEY (import_log_id) REFERENCES activity_import_log (id)');
+        $this->addSql('ALTER TABLE activities ADD CONSTRAINT FK_B5F1AFE5DE12AB56 FOREIGN KEY (created_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE activities ADD CONSTRAINT FK_B5F1AFE510BC6D9F FOREIGN KEY (changed_by) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE activities ADD CONSTRAINT FK_B5F1AFE51F6FA0AF FOREIGN KEY (deleted_by) REFERENCES user (id)');
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    public function down(Schema $schema)
+    {
+        // this down() migration is auto-generated, please modify it to your needs
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+
+        $this->addSql('ALTER TABLE user_role DROP FOREIGN KEY FK_2DE8C6A3A76ED395');
+        $this->addSql('ALTER TABLE comments DROP FOREIGN KEY FK_5F9E962ADE12AB56');
+        $this->addSql('ALTER TABLE comments DROP FOREIGN KEY FK_5F9E962A10BC6D9F');
+        $this->addSql('ALTER TABLE comments DROP FOREIGN KEY FK_5F9E962A1F6FA0AF');
+        $this->addSql('ALTER TABLE blog DROP FOREIGN KEY FK_C0155143DE12AB56');
+        $this->addSql('ALTER TABLE blog DROP FOREIGN KEY FK_C015514310BC6D9F');
+        $this->addSql('ALTER TABLE blog DROP FOREIGN KEY FK_C01551431F6FA0AF');
+        $this->addSql('ALTER TABLE agenda_item DROP FOREIGN KEY FK_223E876EDE12AB56');
+        $this->addSql('ALTER TABLE agenda_item DROP FOREIGN KEY FK_223E876E10BC6D9F');
+        $this->addSql('ALTER TABLE agenda_item DROP FOREIGN KEY FK_223E876E1F6FA0AF');
+        $this->addSql('ALTER TABLE agenda DROP FOREIGN KEY FK_2CEDC877DE12AB56');
+        $this->addSql('ALTER TABLE agenda DROP FOREIGN KEY FK_2CEDC87710BC6D9F');
+        $this->addSql('ALTER TABLE agenda DROP FOREIGN KEY FK_2CEDC8771F6FA0AF');
+        $this->addSql('ALTER TABLE agendas_users DROP FOREIGN KEY FK_81419C8AA76ED395');
+        $this->addSql('ALTER TABLE file DROP FOREIGN KEY FK_8C9F3610DE12AB56');
+        $this->addSql('ALTER TABLE file DROP FOREIGN KEY FK_8C9F361010BC6D9F');
+        $this->addSql('ALTER TABLE file DROP FOREIGN KEY FK_8C9F36101F6FA0AF');
+        $this->addSql('ALTER TABLE contact DROP FOREIGN KEY FK_4C62E638DE12AB56');
+        $this->addSql('ALTER TABLE contact DROP FOREIGN KEY FK_4C62E63810BC6D9F');
+        $this->addSql('ALTER TABLE contact DROP FOREIGN KEY FK_4C62E6381F6FA0AF');
+        $this->addSql('ALTER TABLE events DROP FOREIGN KEY FK_5387574ADE12AB56');
+        $this->addSql('ALTER TABLE events DROP FOREIGN KEY FK_5387574A10BC6D9F');
+        $this->addSql('ALTER TABLE events DROP FOREIGN KEY FK_5387574A1F6FA0AF');
+        $this->addSql('ALTER TABLE event_categories DROP FOREIGN KEY FK_621D9F47DE12AB56');
+        $this->addSql('ALTER TABLE event_categories DROP FOREIGN KEY FK_621D9F4710BC6D9F');
+        $this->addSql('ALTER TABLE event_categories DROP FOREIGN KEY FK_621D9F471F6FA0AF');
+        $this->addSql('ALTER TABLE checklistfields DROP FOREIGN KEY FK_CA3588CADE12AB56');
+        $this->addSql('ALTER TABLE checklistfields DROP FOREIGN KEY FK_CA3588CA10BC6D9F');
+        $this->addSql('ALTER TABLE checklistfields DROP FOREIGN KEY FK_CA3588CA1F6FA0AF');
+        $this->addSql('ALTER TABLE checklists DROP FOREIGN KEY FK_B0839B3FDE12AB56');
+        $this->addSql('ALTER TABLE checklists DROP FOREIGN KEY FK_B0839B3F10BC6D9F');
+        $this->addSql('ALTER TABLE checklists DROP FOREIGN KEY FK_B0839B3F1F6FA0AF');
+        $this->addSql('ALTER TABLE answer DROP FOREIGN KEY FK_DADD4A25DE12AB56');
+        $this->addSql('ALTER TABLE answer DROP FOREIGN KEY FK_DADD4A2510BC6D9F');
+        $this->addSql('ALTER TABLE answer DROP FOREIGN KEY FK_DADD4A251F6FA0AF');
+        $this->addSql('ALTER TABLE checklistfieldtypes DROP FOREIGN KEY FK_2F72966CDE12AB56');
+        $this->addSql('ALTER TABLE checklistfieldtypes DROP FOREIGN KEY FK_2F72966C10BC6D9F');
+        $this->addSql('ALTER TABLE checklistfieldtypes DROP FOREIGN KEY FK_2F72966C1F6FA0AF');
+        $this->addSql('ALTER TABLE checklistitems DROP FOREIGN KEY FK_3ACB9CB1DE12AB56');
+        $this->addSql('ALTER TABLE checklistitems DROP FOREIGN KEY FK_3ACB9CB110BC6D9F');
+        $this->addSql('ALTER TABLE checklistitems DROP FOREIGN KEY FK_3ACB9CB11F6FA0AF');
+        $this->addSql('ALTER TABLE answer_given DROP FOREIGN KEY FK_D2D8CAC5DE12AB56');
+        $this->addSql('ALTER TABLE answer_given DROP FOREIGN KEY FK_D2D8CAC510BC6D9F');
+        $this->addSql('ALTER TABLE answer_given DROP FOREIGN KEY FK_D2D8CAC51F6FA0AF');
+        $this->addSql('ALTER TABLE rounds DROP FOREIGN KEY FK_3A7FD554DE12AB56');
+        $this->addSql('ALTER TABLE rounds DROP FOREIGN KEY FK_3A7FD55410BC6D9F');
+        $this->addSql('ALTER TABLE rounds DROP FOREIGN KEY FK_3A7FD5541F6FA0AF');
+        $this->addSql('ALTER TABLE activity_import_log DROP FOREIGN KEY FK_4EB0F64DDE12AB56');
+        $this->addSql('ALTER TABLE activity_import_log DROP FOREIGN KEY FK_4EB0F64D10BC6D9F');
+        $this->addSql('ALTER TABLE activity_import_log DROP FOREIGN KEY FK_4EB0F64D1F6FA0AF');
+        $this->addSql('ALTER TABLE activities DROP FOREIGN KEY FK_B5F1AFE5DE12AB56');
+        $this->addSql('ALTER TABLE activities DROP FOREIGN KEY FK_B5F1AFE510BC6D9F');
+        $this->addSql('ALTER TABLE activities DROP FOREIGN KEY FK_B5F1AFE51F6FA0AF');
+        $this->addSql('ALTER TABLE user_role DROP FOREIGN KEY FK_2DE8C6A3D60322AC');
+        $this->addSql('ALTER TABLE role_hierarchy DROP FOREIGN KEY FK_AB8EFB72A44B56EA');
+        $this->addSql('ALTER TABLE role_hierarchy DROP FOREIGN KEY FK_AB8EFB72B4B76AB7');
+        $this->addSql('ALTER TABLE role_permission DROP FOREIGN KEY FK_6F7DF886D60322AC');
+        $this->addSql('ALTER TABLE role_permission DROP FOREIGN KEY FK_6F7DF886FED90CCA');
+        $this->addSql('ALTER TABLE comments DROP FOREIGN KEY FK_5F9E962A727ACA70');
+        $this->addSql('ALTER TABLE blog_category DROP FOREIGN KEY FK_72113DE612469DE2');
+        $this->addSql('ALTER TABLE comments DROP FOREIGN KEY FK_5F9E962ADAE07E97');
+        $this->addSql('ALTER TABLE blog_category DROP FOREIGN KEY FK_72113DE6DAE07E97');
+        $this->addSql('ALTER TABLE blog_images DROP FOREIGN KEY FK_75501BABED85FE43');
+        $this->addSql('ALTER TABLE blog_youtubes DROP FOREIGN KEY FK_4E176700ED85FE43');
+        $this->addSql('ALTER TABLE blogimage_blogimagetypes DROP FOREIGN KEY FK_B731A4C8125F993');
+        $this->addSql('ALTER TABLE blogimage_blogimagetypes DROP FOREIGN KEY FK_B731A4C8ED85FE43');
+        $this->addSql('ALTER TABLE agendas_users DROP FOREIGN KEY FK_81419C8AEA67784A');
+        $this->addSql('ALTER TABLE event_categories DROP FOREIGN KEY FK_621D9F4793CB796C');
+        $this->addSql('ALTER TABLE blog_images DROP FOREIGN KEY FK_75501BAB10F3034D');
+        $this->addSql('ALTER TABLE image_imagetypes DROP FOREIGN KEY FK_9AF1048310F3034D');
+        $this->addSql('ALTER TABLE events DROP FOREIGN KEY FK_5387574A10F3034D');
+        $this->addSql('ALTER TABLE image_imagetypes DROP FOREIGN KEY FK_9AF10483125F993');
+        $this->addSql('ALTER TABLE blog_youtubes DROP FOREIGN KEY FK_4E1767001FE86EAB');
+        $this->addSql('ALTER TABLE youtubeimages DROP FOREIGN KEY FK_B8AD4513BB7E40D1');
+        $this->addSql('ALTER TABLE events DROP FOREIGN KEY FK_5387574A12469DE2');
+        $this->addSql('ALTER TABLE checklistfields DROP FOREIGN KEY FK_CA3588CA727ACA70');
+        $this->addSql('ALTER TABLE checklistfield_answer DROP FOREIGN KEY FK_B8E8C4495C182637');
+        $this->addSql('ALTER TABLE answer_given DROP FOREIGN KEY FK_D2D8CAC519337B72');
+        $this->addSql('ALTER TABLE checklistfields DROP FOREIGN KEY FK_CA3588CA7BB2580B');
+        $this->addSql('ALTER TABLE checklistitems DROP FOREIGN KEY FK_3ACB9CB17BB2580B');
+        $this->addSql('ALTER TABLE answer_given DROP FOREIGN KEY FK_D2D8CAC5B16D08A7');
+        $this->addSql('ALTER TABLE checklistfield_answer DROP FOREIGN KEY FK_B8E8C449AA334807');
+        $this->addSql('ALTER TABLE answer_given DROP FOREIGN KEY FK_D2D8CAC5AA334807');
+        $this->addSql('ALTER TABLE checklistfields DROP FOREIGN KEY FK_CA3588CAF3E3FDB9');
+        $this->addSql('ALTER TABLE answer_given DROP FOREIGN KEY FK_D2D8CAC57E0892A4');
+        $this->addSql('ALTER TABLE activities DROP FOREIGN KEY FK_B5F1AFE59656E79E');
+        $this->addSql('ALTER TABLE rounds DROP FOREIGN KEY FK_3A7FD55481C06096');
+        $this->addSql('DROP TABLE user');
+        $this->addSql('DROP TABLE user_role');
+        $this->addSql('DROP TABLE token');
+        $this->addSql('DROP TABLE role');
+        $this->addSql('DROP TABLE role_hierarchy');
+        $this->addSql('DROP TABLE role_permission');
+        $this->addSql('DROP TABLE permission');
+        $this->addSql('DROP TABLE comments');
+        $this->addSql('DROP TABLE categories');
+        $this->addSql('DROP TABLE blog');
+        $this->addSql('DROP TABLE blog_category');
+        $this->addSql('DROP TABLE blog_images');
+        $this->addSql('DROP TABLE blog_youtubes');
+        $this->addSql('DROP TABLE blogimagetypes');
+        $this->addSql('DROP TABLE blogimages');
+        $this->addSql('DROP TABLE blogimage_blogimagetypes');
+        $this->addSql('DROP TABLE agenda_item');
+        $this->addSql('DROP TABLE agenda');
+        $this->addSql('DROP TABLE agendas_users');
+        $this->addSql('DROP TABLE file');
+        $this->addSql('DROP TABLE images');
+        $this->addSql('DROP TABLE image_imagetypes');
+        $this->addSql('DROP TABLE imagetypes');
+        $this->addSql('DROP TABLE youtubeimages');
+        $this->addSql('DROP TABLE youtubevideos');
+        $this->addSql('DROP TABLE contact');
+        $this->addSql('DROP TABLE searchphrases');
+        $this->addSql('DROP TABLE events');
+        $this->addSql('DROP TABLE event_categories');
+        $this->addSql('DROP TABLE checklistfields');
+        $this->addSql('DROP TABLE checklistfield_answer');
+        $this->addSql('DROP TABLE checklists');
+        $this->addSql('DROP TABLE answer');
+        $this->addSql('DROP TABLE checklistfieldtypes');
+        $this->addSql('DROP TABLE checklistitems');
+        $this->addSql('DROP TABLE answer_given');
+        $this->addSql('DROP TABLE access_token');
+        $this->addSql('DROP TABLE rounds');
+        $this->addSql('DROP TABLE activity_import_log');
+        $this->addSql('DROP TABLE activities');
+    }
+}
