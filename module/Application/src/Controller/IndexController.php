@@ -11,12 +11,12 @@ use StravaApi\Service\StravaService;
 use Twitter\Service\twitterOathService;
 use Twitter\Service\twitterService;
 use UploadImages\Service\imageService;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
-use Zend\View\Model\JsonModel;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\ViewModel;
+use Laminas\View\Model\JsonModel;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use DoctrineORMModule\Form\Annotation\AnnotationBuilder;
-use Zend\Captcha;
+use Laminas\Captcha;
 use Contact\Entity\Contact;
 
 class IndexController extends AbstractActionController
@@ -103,7 +103,7 @@ class IndexController extends AbstractActionController
         $form->setAttributes(['action' => '/#contact']);
 
         $form->add([
-            'type' => 'Zend\Form\Element\Captcha',
+            'type' => 'Laminas\Form\Element\Captcha',
             'name' => 'captcha',
             'options' => [
                 'label' => 'Please verify you are human',
