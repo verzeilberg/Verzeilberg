@@ -8,14 +8,14 @@
 
 namespace Application\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\ViewModel;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use DoctrineORMModule\Form\Annotation\AnnotationBuilder;
-use Zend\Form\Form;
+use Laminas\Form\Form;
 use User\Entity\User;
 use Contact\Entity\Contact;
-use Zend\Session\Container;
+use Laminas\Session\Container;
 
 class UserController extends AbstractActionController {
 

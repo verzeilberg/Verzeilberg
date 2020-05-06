@@ -8,8 +8,8 @@
 
 namespace Application\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\ViewModel;
 use Contact\Entity\Contact;
 
 class BeheerController extends AbstractActionController {
@@ -24,13 +24,11 @@ class BeheerController extends AbstractActionController {
      */
     protected $vhm;
     protected $tos;
-    protected $bs;
 
-    public function __construct($entityManager, $viewHelperManager, $beheerService) {
+    public function __construct($entityManager, $viewHelperManager) {
 
         $this->em = $entityManager;
         $this->vhm = $viewHelperManager;
-        $this->bs = $beheerService;
     }
 
     public function indexAction() {
@@ -38,13 +36,11 @@ class BeheerController extends AbstractActionController {
         $this->vhm->get('headScript')->appendFile('https://www.google.com/jsapi');
         $this->layout('layout/beheer');
         
-        $diskInfo = $this->bs->getDiskSpace();
         $contactForms = $this->em->getRepository(Contact::class)
                 ->findBy([], ['dateCreated' => 'DESC'],5,0);
         
         return new ViewModel(
                 array(
-                   'diskInfo' => $diskInfo,
                    'contactForms' => $contactForms
                     
                 )

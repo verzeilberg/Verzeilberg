@@ -11,10 +11,10 @@
  * control, so do not include passwords or other sensitive information in this
  * file.
  */
-use Zend\Session\Storage\SessionArrayStorage;
-use Zend\Session\Validator\RemoteAddr;
-use Zend\Session\Validator\HttpUserAgent;
-use Zend\Cache\Storage\Adapter\Filesystem;
+use Laminas\Session\Storage\SessionArrayStorage;
+use Laminas\Session\Validator\RemoteAddr;
+use Laminas\Session\Validator\HttpUserAgent;
+use Laminas\Cache\Storage\Adapter\Filesystem;
 
 return [
     // Session configuration.

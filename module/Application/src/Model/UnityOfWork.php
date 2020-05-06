@@ -2,7 +2,7 @@
 
 namespace Application\Model;
 
-use Zend\Form\Annotation;
+use Laminas\Form\Annotation;
 use Doctrine\ORM\Mapping as ORM;
 use User\Entity\User;
 
